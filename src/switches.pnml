@@ -1,0 +1,22 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Universal switches */
+switch(FEAT_HOUSES, SELF, switch_houses_cargo_type_accept, climate) {
+    CLIMATE_ARCTIC:     return PASS + (MAIL << 5) + (FOOD << 10);
+    CLIMATE_TROPICAL:   return PASS + (MAIL << 5) + (FOOD << 10);
+    return PASS + (MAIL << 5) + (GOOD << 10);
+}
+/* hotels */
+switch( FEAT_HOUSES, SELF, switch_hotel_distance_check, nearest_house_matching_criterion(3, SEARCH_HOUSE_BY_CLASS)==0) {
+    return;
+}
+/* skyscrapers */
+switch( FEAT_HOUSES, SELF, switch_skyscraper_distance_check, nearest_house_matching_criterion(1, SEARCH_HOUSE_BY_CLASS)==0) {
+    return;
+}
+switch (FEAT_HOUSES, SELF, switch_skyscraper_construction_check, same_house_count_town == 0) {
+    1: return switch_skyscraper_distance_check;
+    return 0;
+}

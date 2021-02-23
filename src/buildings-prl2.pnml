@@ -1,0 +1,164 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define BUILDING_PRL2_SPRITES(Model, Xcoord) \
+spriteset(sset_building_prl2_##Model##_stages, "gfx/buildings-prl2.png") { \
+    tmpl_sprite_ground(Xcoord,  540, 1) \
+    tmpl_sprite_build40(Xcoord,  440, 1) \
+    tmpl_sprite_build40(Xcoord,  340, 1) \
+} \
+spriteset(sset_building_prl2_##Model##_ground, "gfx/buildings-prl2.png") { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_building_prl2_##Model, "gfx/buildings-prl2.png") { \
+    tmpl_sprite_build40(Xcoord,   20, 1) \
+} \
+spriteset(sset_building_prl2_##Model##_ground_snow, "gfx/buildings-prl2.png") { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spriteset(sset_building_prl2_##Model##_snow, "gfx/buildings-prl2.png") { \
+    tmpl_sprite_build40(Xcoord,  180, 1) \
+} \
+spritelayout slay_building_prl2_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_building_prl2_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_building_prl2_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_prl2_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_prl2_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_building_prl2_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_prl2_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_prl2_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+
+/* Model #1 */
+BUILDING_PRL2_SPRITES(1, 4)
+/* Model #2 */
+BUILDING_PRL2_SPRITES(2, 80)
+
+/* Switches */
+#define BUILDING_PRL2_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_building_prl2_##Model##_normal_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_building_prl2_##Model##_stages; \
+    return slay_building_prl2_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_building_prl2_##Model##_snow_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_building_prl2_##Model##_stages; \
+    return slay_building_prl2_##Model##_snow; \
+}
+/* Model #1 */
+BUILDING_PRL2_SWITCH(1)
+/* Model #2 */
+BUILDING_PRL2_SWITCH(2)
+
+switch (FEAT_HOUSES, SELF, switch_building_prl2_medium_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_building_prl2_1_snow_graphics;
+    switch_building_prl2_1_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl2_blue_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_building_prl2_2_snow_graphics;
+    switch_building_prl2_2_normal_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_building_prl2_medium) {
+    property {
+        /* common properties */
+        substitute:                 0x02;
+        name:                       string(STR_FLATS_SMALL);
+        override:                   0x02;
+        building_flags:             bitmask();
+        population:                 45;
+        mail_multiplier:            16;
+        accepted_cargos:            [[PASS, 4], [MAIL, 1], [GOOD, 2]];
+        local_authority_impact:     74;
+        removal_cost_multiplier:    71;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1963, 1995];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_prl2_medium_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_building_prl2_blue) {
+    property {
+        /* common properties */
+        substitute:                 0x02;
+        name:                       string(STR_FLATS_SMALL);
+//        override:                   0x02;
+        building_flags:             bitmask();
+        population:                 30;
+        mail_multiplier:            12;
+        accepted_cargos:            [[PASS, 3], [MAIL, 1], [GOOD, 2]];
+        local_authority_impact:     74;
+        removal_cost_multiplier:    71;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1963, 1995];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_prl2_blue_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

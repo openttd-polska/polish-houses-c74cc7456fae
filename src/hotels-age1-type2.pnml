@@ -1,0 +1,219 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define HOTEL1_MODERN_FILE  "gfx/hotels-age1-type2.png"
+
+/* Sprites and spritelayouts */
+#define HOTEL1_MODERN_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_hotel1_modern_##Model##_##Tile, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_build40_east_##Tile##_flags(Xcoord,  20, 1, ANIM) \
+} \
+spriteset(sset_hotel1_modern_##Model##_##Tile##_ground, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord, 140, 1) \
+} \
+spriteset(sset_hotel1_modern_##Model##_##Tile##_snow, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_build40_east_##Tile##_flags(Xcoord+104, 20, 1, ANIM) \
+} \
+spriteset(sset_hotel1_modern_##Model##_##Tile##_ground_snow, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord+104, 140, 1) \
+} \
+spritelayout slay_hotel1_modern_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_modern_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_modern_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_modern_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_modern_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_modern_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define HOTEL1_MODERN_SPRITES(Model, Xcoord) \
+    HOTEL1_MODERN_TILE_SPRITES(Model, n, Xcoord) \
+    HOTEL1_MODERN_TILE_SPRITES(Model, e, Xcoord) \
+
+/* Model #1 */
+HOTEL1_MODERN_SPRITES(1, 4)
+/* Model #2 */
+HOTEL1_MODERN_SPRITES(2, 224)
+/* Model #3 */
+HOTEL1_MODERN_SPRITES(3, 444)
+/* Model #4 */
+HOTEL1_MODERN_SPRITES(4, 664)
+
+#define HOTEL1_MODERN_CONSTR_STAGE_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_hotel1_modern_constr_stage3_##Model##_##Tile, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_build40_east_##Tile(Xcoord, 280, 1) \
+} \
+spriteset(sset_hotel1_modern_constr_stage2_##Model##_##Tile, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_build40_east_##Tile(Xcoord, 400, 1) \
+} \
+spriteset(sset_hotel1_modern_constr_stage1_##Model##_##Tile, HOTEL1_MODERN_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord, 520, 1) \
+} \
+spritelayout slay_hotel1_modern_constr_stage1_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_modern_constr_stage1_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 8; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_modern_constr_stage2_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_modern_constr_stage2_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_modern_constr_stage3_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_modern_constr_stage3_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define HOTEL1_MODERN_CONSTR_STAGE_SPRITES(Model, Xcoord) \
+    HOTEL1_MODERN_CONSTR_STAGE_TILE_SPRITES(Model, n, Xcoord) \
+    HOTEL1_MODERN_CONSTR_STAGE_TILE_SPRITES(Model, e, Xcoord) \
+
+/* Model #1 */
+HOTEL1_MODERN_CONSTR_STAGE_SPRITES(1, 4)
+/* Model #2 */
+HOTEL1_MODERN_CONSTR_STAGE_SPRITES(2, 224)
+/* Model #3 */
+HOTEL1_MODERN_CONSTR_STAGE_SPRITES(3, 444)
+/* Model #4 */
+HOTEL1_MODERN_CONSTR_STAGE_SPRITES(4, 664)
+
+/* Switches */
+#define HOTEL1_MODERN_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_hotel1_modern_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_hotel1_modern_##Model##_##Tile##_snow; \
+    slay_hotel1_modern_##Model##_##Tile; \
+} \
+switch (FEAT_HOUSES, SELF, switch_hotel1_modern_##Model##_##Tile##_graphics, construction_state) { \
+    0: return slay_hotel1_modern_constr_stage1_##Model##_##Tile; \
+    1: return slay_hotel1_modern_constr_stage2_##Model##_##Tile; \
+    2: return slay_hotel1_modern_constr_stage3_##Model##_##Tile; \
+    return switch_hotel1_modern_##Model##_##Tile##_climate_graphics; \
+}
+#define HOTEL1_MODERN_CLIMATE_SWITCH(Model) \
+    HOTEL1_MODERN_TILE_CLIMATE_SWITCH(Model, n) \
+    HOTEL1_MODERN_TILE_CLIMATE_SWITCH(Model, e) \
+
+/* Model #1 */
+HOTEL1_MODERN_CLIMATE_SWITCH(1)
+/* Model #2 */
+HOTEL1_MODERN_CLIMATE_SWITCH(2)
+/* Model #3 */
+HOTEL1_MODERN_CLIMATE_SWITCH(3)
+/* Model #4 */
+HOTEL1_MODERN_CLIMATE_SWITCH(4)
+
+#define HOTEL1_MODERN_TILE_GRAPHICS_SWITCH(Tile) \
+random_switch (FEAT_HOUSES, SELF, switch_hotel1_modern_lowlands_##Tile##_graphics) { \
+    3: return switch_hotel1_modern_1_##Tile##_graphics; \
+    3: return switch_hotel1_modern_2_##Tile##_graphics; \
+    2: return switch_hotel1_modern_3_##Tile##_graphics; \
+} \
+random_switch (FEAT_HOUSES, SELF, switch_hotel1_modern_mountains_##Tile##_graphics) { \
+    3: return switch_hotel1_modern_3_##Tile##_graphics; \
+    5: return switch_hotel1_modern_4_##Tile##_graphics; \
+} \
+switch (FEAT_HOUSES, SELF, switch_hotel1_modern_##Tile##_graphics, nearby_tile_height(0, 0) <= param_transition) { \
+    1: return switch_hotel1_modern_lowlands_##Tile##_graphics; \
+    return switch_hotel1_modern_mountains_##Tile##_graphics; \
+}
+#define HOTEL1_MODERN_GRAPHICS_SWITCH \
+    HOTEL1_MODERN_TILE_GRAPHICS_SWITCH(n) \
+    HOTEL1_MODERN_TILE_GRAPHICS_SWITCH(e) \
+
+HOTEL1_MODERN_GRAPHICS_SWITCH
+
+switch(FEAT_HOUSES, SELF, switch_hotel1_modern_construction_check, (nearby_tile_class(1, 1) == TILE_CLASS_ROAD) || (nearby_tile_class(0, 2) == TILE_CLASS_ROAD)) {
+    1: return switch_hotel_distance_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_hotel1_modern, -1, HOUSE_SIZE_1X2) {
+    property {
+        /* common properties */
+        substitute:                 0x07;
+        name:                       string(STR_HOTEL_OLD);
+//        override:                   0x07;
+        building_flags:             bitmask();
+        population:                 120;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     150;
+        removal_cost_multiplier:    180;
+        probability:                PLB_PROBABILITY * 3;
+        years_available:            [1920, 1965];
+        minimum_lifetime:           LIFETIME_HOTEL;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_HOTEL;
+    }
+
+    graphics {
+        graphics_north:     switch_hotel1_modern_n_graphics;
+        graphics_east:      switch_hotel1_modern_e_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        construction_check: switch_hotel1_modern_construction_check;
+    }
+}

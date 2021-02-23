@@ -1,0 +1,176 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define CHURCH_AGE1_FILE    "gfx/churches-age1.png"
+
+/* Sprites and spritelayouts */
+#define SPRITES_CHURCH_AGE1(Model, Xcoord) \
+spriteset(sset_church_age1_##Model##_stages, CHURCH_AGE1_FILE) { \
+    tmpl_sprite_ground(Xcoord, 380, 1) \
+    tmpl_sprite_build40(Xcoord, 280, 1) \
+    tmpl_sprite_build40(Xcoord, 180, 1) \
+} \
+spritelayout slay_church_age1_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_church_age1_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spriteset(sset_church_age1_##Model##_ground, CHURCH_AGE1_FILE) { \
+    tmpl_sprite_ground(Xcoord, 120, 1) \
+} \
+spriteset(sset_church_age1_##Model, CHURCH_AGE1_FILE) { \
+    tmpl_sprite_build40(Xcoord, 20, 1) \
+} \
+spriteset(sset_church_age1_##Model##_ground_snow, CHURCH_AGE1_FILE) { \
+    tmpl_sprite_ground(Xcoord+76, 120, 1) \
+} \
+spriteset(sset_church_age1_##Model##_snow, CHURCH_AGE1_FILE) { \
+    tmpl_sprite_build40(Xcoord+76, 20, 1) \
+} \
+spritelayout slay_church_age1_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+	    sprite: sset_church_age1_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_church_age1_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_church_age1_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+	    sprite: sset_church_age1_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_church_age1_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+
+/* Model wooden */
+SPRITES_CHURCH_AGE1(wood, 4)
+/* Model brick */
+SPRITES_CHURCH_AGE1(brick, 156)
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_church_age1_brick_normal_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_church_age1_brick_stages;
+    return slay_church_age1_brick;
+}
+switch (FEAT_HOUSES, SELF, switch_church_age1_brick_snow_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_church_age1_brick_stages;
+    return slay_church_age1_brick_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_church_age1_brick_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_church_age1_brick_snow_graphics;
+    switch_church_age1_brick_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_church_age1_wood_normal_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_church_age1_wood_stages;
+    return slay_church_age1_wood;
+}
+switch (FEAT_HOUSES, SELF, switch_church_age1_wood_snow_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_church_age1_wood_stages;
+    return slay_church_age1_wood_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_church_age1_wood_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_church_age1_wood_snow_graphics;
+    switch_church_age1_wood_normal_graphics;
+}
+switch (FEAT_HOUSES, PARENT, switch_church_age1_wood_construction_check, is_city == 0) {
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_church_age1_wood) {
+    property {
+        /* common properties */
+        substitute:                 0x03;
+        name:                       string(STR_SMALL_WOODEN_CHURCH);
+//        override:                   0x03;
+        building_flags:             bitmask(HOUSE_FLAG_CHURCH);
+        population:                 4;
+        mail_multiplier:            2;
+        accepted_cargos:            [[PASS, 8], [MAIL, 1]];
+        local_authority_impact:     230;
+        removal_cost_multiplier:    90;
+        probability:                PLB_PROBABILITY * 0.5;
+        years_available:            [PLB_START_DATE, 1935];
+        minimum_lifetime:           LIFETIME_CHURCH-2;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_church_age1_wood_graphics;
+        construction_check: switch_church_age1_wood_construction_check;
+    }
+}
+
+item (FEAT_HOUSES, item_church_age1_brick) {
+    property {
+        /* common properties */
+        substitute:                 0x03;
+        name:                       string(STR_SMALL_BRICK_CHURCH);
+        override:                   0x03;
+        building_flags:             bitmask(HOUSE_FLAG_CHURCH);
+        population:                 5;
+        mail_multiplier:            2;
+        accepted_cargos:            [[PASS, 8], [MAIL, 1]];
+        local_authority_impact:     230;
+        removal_cost_multiplier:    90;
+        probability:                PLB_PROBABILITY * 0.5;
+        years_available:            [PLB_START_DATE, 1945];
+        minimum_lifetime:           LIFETIME_CHURCH;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_church_age1_brick_graphics;
+        anim_control:       0;
+    }
+}

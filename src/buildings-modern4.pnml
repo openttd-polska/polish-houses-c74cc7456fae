@@ -1,0 +1,198 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define BUILDING_MODERN4_SPRITES(Model, Xcoord) \
+spriteset(sset_building_modern4_##Model##_ground, "gfx/buildings-modern4.png") { \
+    tmpl_sprite_ground(Xcoord,  160, 1) \
+} \
+spriteset(sset_building_modern4_##Model, "gfx/buildings-modern4.png") { \
+    tmpl_sprite_build80(Xcoord,   20, 1) \
+} \
+spriteset(sset_building_modern4_##Model##_ground_snow, "gfx/buildings-modern4.png") { \
+    tmpl_sprite_ground(Xcoord,  360, 1) \
+} \
+spriteset(sset_building_modern4_##Model##_snow, "gfx/buildings-modern4.png") { \
+    tmpl_sprite_build80(Xcoord,  220, 1) \
+} \
+spritelayout slay_building_modern4_##Model { \
+    ground { \
+        sprite: LOAD_TEMP(0); \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_modern4_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_modern4_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_building_modern4_##Model##_snow { \
+    ground { \
+        sprite: LOAD_TEMP(0); \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_modern4_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_modern4_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+/* Model #1 */
+BUILDING_MODERN4_SPRITES(1, 4)
+/* Model #2 */
+BUILDING_MODERN4_SPRITES(2, 80)
+/* Model #3 */
+BUILDING_MODERN4_SPRITES(3, 156)
+/* Model #4 */
+BUILDING_MODERN4_SPRITES(4, 232)
+/* Model #5 */
+BUILDING_MODERN4_SPRITES(5, 308)
+/* Model #6 */
+BUILDING_MODERN4_SPRITES(6, 384)
+/* Model #7 */
+BUILDING_MODERN4_SPRITES(7, 460)
+/* Model #8 */
+BUILDING_MODERN4_SPRITES(8, 536)
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_sw_normal_graphics,
+    nearby_tile_slope(0, 0) == SLOPE_FLAT ?
+    ((nearby_tile_house_id(0, -1) == (item_building_modern4_long_sw+256)) & (nearby_tile_slope(0, -1) == SLOPE_FLAT)) +
+    (((nearby_tile_house_id(0, 1) == (item_building_modern4_long_sw+256)) & (nearby_tile_slope(0, 1) == SLOPE_FLAT)) << 1) : 0 ) {
+    1: return slay_building_modern4_2;
+    2: return slay_building_modern4_3;
+    3: return slay_building_modern4_4;
+    return slay_building_modern4_1;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_sw_snow_graphics,
+    nearby_tile_slope(0, 0) == SLOPE_FLAT ?
+    ((nearby_tile_house_id(0, -1) == (item_building_modern4_long_sw+256)) & (nearby_tile_slope(0, -1) == SLOPE_FLAT)) +
+    (((nearby_tile_house_id(0, 1) == (item_building_modern4_long_sw+256)) & (nearby_tile_slope(0, 1) == SLOPE_FLAT)) << 1) : 0 ) {
+    1: return slay_building_modern4_2_snow;
+    2: return slay_building_modern4_3_snow;
+    3: return slay_building_modern4_4_snow;
+    return slay_building_modern4_1_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_sw_climate_graphics, [
+    STORE_TEMP(terrain_type == TILETYPE_SNOW ? GROUNDSPRITE_SNOW : GROUNDSPRITE_CONCRETE, 0), terrain_type]) {
+    TILETYPE_SNOW: return switch_building_modern4_long_sw_snow_graphics;
+    return switch_building_modern4_long_sw_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_sw_graphics, construction_state) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow2l_1;
+    2: return switch_constr_stage_narrow2l_2;
+    return switch_building_modern4_long_sw_climate_graphics;
+}
+
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_se_normal_graphics,
+    nearby_tile_slope(0, 0) == SLOPE_FLAT ?
+    ((nearby_tile_house_id(-1, 0) == (item_building_modern4_long_se+256)) & (nearby_tile_slope(-1, 0) == SLOPE_FLAT)) +
+    (((nearby_tile_house_id(1, 0) == (item_building_modern4_long_se+256)) & (nearby_tile_slope(1, 0) == SLOPE_FLAT)) << 1) : 0 ) {
+    1: return slay_building_modern4_6;
+    2: return slay_building_modern4_7;
+    3: return slay_building_modern4_8;
+    return slay_building_modern4_5;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_se_snow_graphics,
+    nearby_tile_slope(0, 0) == SLOPE_FLAT ?
+    ((nearby_tile_house_id(-1, 0) == (item_building_modern4_long_se+256)) & (nearby_tile_slope(-1, 0) == SLOPE_FLAT)) +
+    (((nearby_tile_house_id(1, 0) == (item_building_modern4_long_se+256)) & (nearby_tile_slope(1, 0) == SLOPE_FLAT)) << 1) : 0 ) {
+    1: return slay_building_modern4_6_snow;
+    2: return slay_building_modern4_7_snow;
+    3: return slay_building_modern4_8_snow;
+    return slay_building_modern4_5_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_se_climate_graphics, [
+    STORE_TEMP(terrain_type == TILETYPE_SNOW ? GROUNDSPRITE_SNOW : GROUNDSPRITE_CONCRETE, 0), terrain_type]) {
+    TILETYPE_SNOW: return switch_building_modern4_long_se_snow_graphics;
+    return switch_building_modern4_long_se_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_building_modern4_long_se_graphics, construction_state) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow2r_1;
+    2: return switch_constr_stage_narrow2r_2;
+    return switch_building_modern4_long_se_climate_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_building_modern4_long_sw) {
+    property {
+        /* common properties */
+        substitute:                 0x1D;
+        name:                       string(STR_FLATS_TALL);
+//        override:                   0x1D;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 120;
+        mail_multiplier:            58;
+        accepted_cargos:            [[PASS, 8], [MAIL, 3], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    107;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [1991, 9999];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_modern4_long_sw_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        anim_control:       switch_anim_control_75;
+    }
+}
+
+item (FEAT_HOUSES, item_building_modern4_long_se) {
+    property {
+        /* common properties */
+        substitute:                 0x1D;
+        name:                       string(STR_FLATS_TALL);
+//        override:                   0x1D;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 98;
+        mail_multiplier:            51;
+        accepted_cargos:            [[PASS, 8], [MAIL, 3], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    107;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [1991, 9999];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_modern4_long_se_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        anim_control:       switch_anim_control_75;
+    }
+}

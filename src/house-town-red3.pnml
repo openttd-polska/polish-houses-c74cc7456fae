@@ -1,0 +1,248 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define HOUSE_TOWN_RED3_SPRITES(Model, Xcoord) \
+spriteset(sset_house_town_red3_##Model##_stages, "gfx/house-town-red3.png") { \
+    tmpl_sprite_ground(Xcoord,  440, 1) \
+    tmpl_sprite_build40(Xcoord,  340, 1) \
+    tmpl_sprite_build40(Xcoord,  340, 1) \
+} \
+spriteset(sset_house_town_red3_##Model##_ground, "gfx/house-town-red3.png") { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_house_town_red3_##Model, "gfx/house-town-red3.png") { \
+    tmpl_sprite_build40(Xcoord,   20, 1) \
+} \
+spriteset(sset_house_town_red3_##Model##_ground_snow, "gfx/house-town-red3.png") { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spriteset(sset_house_town_red3_##Model##_snow, "gfx/house-town-red3.png") { \
+    tmpl_sprite_build40(Xcoord,  180, 1) \
+} \
+spritelayout slay_house_town_red3_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_house_town_red3_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_town_red3_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_town_red3_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_town_red3_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_town_red3_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_town_red3_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_town_red3_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+/* Model #1 */
+HOUSE_TOWN_RED3_SPRITES(1, 4)
+/* Model #2 */
+HOUSE_TOWN_RED3_SPRITES(2, 80)
+/* Model #3 */
+HOUSE_TOWN_RED3_SPRITES(3, 156)
+/* Model #4 */
+HOUSE_TOWN_RED3_SPRITES(4, 232)
+/* Model #5 */
+HOUSE_TOWN_RED3_SPRITES(5, 308)
+
+/* Switches */
+#define HOUSE_TOWN_RED3_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_##Model##_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_town_red3_##Model##_stages; \
+    return slay_house_town_red3_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_##Model##_snow_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_town_red3_##Model##_stages; \
+    return slay_house_town_red3_##Model##_snow; \
+}
+/* Model #1 */
+HOUSE_TOWN_RED3_SWITCH(1)
+/* Model #2 */
+HOUSE_TOWN_RED3_SWITCH(2)
+/* Model #3 */
+HOUSE_TOWN_RED3_SWITCH(3)
+/* Model #4 */
+HOUSE_TOWN_RED3_SWITCH(4)
+/* Model #5 */
+HOUSE_TOWN_RED3_SWITCH(5)
+
+random_switch (FEAT_HOUSES, SELF, switch_house_town_red3_large_normal_graphics) {
+    1: return switch_house_town_red3_1_graphics;
+    1: return switch_house_town_red3_2_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_town_red3_large_snow_graphics) {
+    1: return switch_house_town_red3_1_snow_graphics;
+    1: return switch_house_town_red3_2_snow_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_large_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_town_red3_large_snow_graphics;
+    switch_house_town_red3_large_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_medium_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_town_red3_3_snow_graphics;
+    switch_house_town_red3_3_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_restaurant_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_town_red3_4_snow_graphics;
+    switch_house_town_red3_4_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_town_red3_small_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_town_red3_5_snow_graphics;
+    switch_house_town_red3_5_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_house_town_red3_large) {
+    property {
+        /* common properties */
+        substitute:                 0x10;
+        name:                       string(STR_HOUSE_APARTMENTS);
+        override:                   0x10;
+        building_flags:             bitmask();
+        population:                 42;
+        mail_multiplier:            24;
+        accepted_cargos:            [[PASS, 5], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    105;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [PLB_START_DATE, 1975];
+        minimum_lifetime:           LIFETIME_MAJOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_town_red3_large_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        construction_check: return nearby_tile_class(0, 1) == TILE_CLASS_ROAD;
+    }
+}
+
+item (FEAT_HOUSES, item_house_town_red3_medium) {
+    property {
+        /* common properties */
+        substitute:                 0x10;
+        name:                       string(STR_HOUSE_FLATS);
+//        override:                   0x10;
+        building_flags:             bitmask();
+        population:                 40;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 5], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    105;
+        probability:                PLB_PROBABILITY;
+        years_available:            [PLB_START_DATE, 1975];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_town_red3_medium_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_house_town_red3_restaurant) {
+    property {
+        /* common properties */
+        substitute:                 0x10;
+        name:                       string(STR_HOUSE_RESTAURANT);
+//        override:                   0x10;
+        building_flags:             bitmask();
+        population:                 36;
+        mail_multiplier:            20;
+        accepted_cargos:            [[PASS, 5], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    105;
+        probability:                PLB_PROBABILITY;
+        years_available:            [PLB_START_DATE, 1970];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_town_red3_restaurant_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_house_town_red3_small) {
+    property {
+        /* common properties */
+        substitute:                 0x10;
+        name:                       string(STR_HOUSE_FLATS);
+//        override:                   0x10;
+        building_flags:             bitmask();
+        population:                 32;
+        mail_multiplier:            18;
+        accepted_cargos:            [[PASS, 4], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    105;
+        probability:                PLB_PROBABILITY;
+        years_available:            [PLB_START_DATE, 1970];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_town_red3_small_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

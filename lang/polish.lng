@@ -1,0 +1,57 @@
+##grflangid 0x30
+
+# GRF name and description
+STR_GRF_NAME            :{TITLE} {VERSION}
+STR_GRF_DESCRIPTION     :{ORANGE}{TITLE} {VERSION}{BLACK} - tylko do testów...
+
+STR_PARAM_NAME_KEEP_ORIG    :Zachowaj oryginalne budynki
+STR_PARAM_DESC_KEEP_ORIG    :Zaznacz tę opcję aby zachować oryginalne budynki i pozwolić miastom mieszać je z nowymi polskimi budynkami. Domyślnie oryginalne budynki są wyłączone.
+STR_PARAM_NAME_TRANSITION   :Granica między dolinami i górami
+STR_PARAM_DESC_TRANSITION   :Użyj tej opcji aby ustawić wysokość umownej granicy między dolinami i górami. Niektóre budynki moga być budowane tylko w dolinach, a niektóre tylko w górach.
+
+STR_FARM_HOUSE              :Małe gospodarstwo
+STR_COTTAGE_HOUSE           :Mały wiejski dom
+STR_SMALL_HOUSE             :Mały dom
+STR_MEDIUM_HOUSE            :Średni dom
+STR_CUBE_HOUSE              :Dom typu "kostka"
+STR_MODERN_TOWN_HOUSE       :Nowoczesny dom podmiejski
+STR_SMALL_BRICK_CHURCH      :Mały kościół
+STR_SMALL_WOODEN_CHURCH     :Mały drewniany kościół
+
+STR_HOUSE_HIGH              :Wysoka kamienica śródmiejska
+STR_HOUSE_DOWNTOWN          :Kamienica śródmiejska
+STR_HOUSE_FLATS_SHOPS       :Kamienica mieszkalna ze sklepami
+STR_HOUSE_APARTMENTS        :Kamienica z apartamentami
+STR_HOUSE_FLATS             :Kamienica mieszkalna
+STR_HOUSE_RESTAURANT        :Kamienica z restauracjami
+STR_HOUSE_TENEMENT          :Kamienica czynszowa
+STR_HOUSE_FAMILOK           :Dom mieszkalny "familok"
+
+STR_OFFICE_TALL_SHOPS       :Wysoki biurowiec ze sklepami
+STR_OFFICE_SHOPS            :Biurowiec ze sklepami
+STR_OFFICE                  :Biurowiec
+STR_OFFICE_UNTYPICAL        :Nietypowy biurowiec
+STR_FLATS_TALL              :Wysoki blok mieszkalny
+STR_FLATS                   :Blok mieszkalny
+STR_FLATS_SMALL             :Mały blok mieszkalny
+
+STR_HOTEL_OLD               :Hotel
+STR_HOTEL_SPLENDID          :Okazały hotel
+STR_HOTEL_PRL               :Hotel
+STR_HOTEL_NEW               :Hotel
+
+STR_SCHOOL_OLD              :Szkoła
+STR_SCHOOL_NEW              :Szkoła
+
+STR_HISTORIC_HOUSE          :Zabytkowa kamienica
+STR_CATHEDRAL               :Katedra
+STR_CATHEDRAL_LARGE         :Duża katedra
+STR_CAPITPL_CASTLE          :Zamek Królewski
+STR_TOWNHALL                :Ratusz
+STR_PKIN                    :"Pałac Kultury i Nauki"
+STR_MARRIOTT                :Hotel "Marriott"
+STR_POLTEGOR                :Biurowiec "Poltegor"
+STR_COLLEGIUM_ALTUM         :"Collegium Altum" - Uniwersytet Poznański
+STR_INTERCONTINENTAL        :Hotel "Intercontinental"
+STR_ORCO_TOWER              :Biurowiec centre "ORCO Tower"
+STR_WTT                     :Biurowiec "Warsaw Trade Tower"

@@ -1,0 +1,63 @@
+##grflangid 0x01
+
+# GRF name and description
+STR_GRF_NAME            :{TITLE} {VERSION}
+STR_GRF_DESCRIPTION     :{ORANGE}{TITLE} {VERSION}{BLACK} - for tests only...
+
+STR_PARAM_NAME_KEEP_ORIG    :Keep original buildings
+STR_PARAM_DESC_KEEP_ORIG    :Select this option to keep original buildings and allow cities to mix them with new polish buildings. Original houses are disabled by default.
+STR_PARAM_NAME_TRANSITION   :Transition between the valleys and mountains
+STR_PARAM_DESC_TRANSITION   :Use this option to set the height of the transition between the valleys and mountains. Some buildings can be built only in the valleys or in the mountains.
+
+STR_FARM_HOUSE              :Small farm
+STR_COTTAGE_HOUSE           :Small cottage house
+STR_SMALL_HOUSE             :Small house
+STR_MEDIUM_HOUSE            :Medium house
+STR_CUBE_HOUSE              :Medium house "cube" type
+STR_MODERN_TOWN_HOUSE       :Modern town house
+STR_SMALL_BRICK_CHURCH      :Small church
+STR_SMALL_WOODEN_CHURCH     :Small wooden church
+
+STR_HOUSE_HIGH              :High downtown house
+STR_HOUSE_DOWNTOWN          :Downtown house
+STR_HOUSE_FLATS_SHOPS       :Flats and shops
+STR_HOUSE_APARTMENTS        :Apartments
+STR_HOUSE_FLATS             :Flats
+STR_HOUSE_RESTAURANT        :Flats and restaurant
+STR_HOUSE_TENEMENT          :Tenement house
+STR_HOUSE_FAMILOK           :House "familok"
+
+STR_OFFICE_TALL_SHOPS       :Tall office block and shops
+STR_OFFICE_SHOPS            :Office block and shops
+STR_OFFICE                  :Office block
+STR_OFFICE_UNTYPICAL        :Untypical office
+STR_FLATS_TALL              :Tall block of flats
+STR_FLATS                   :Block of flats
+STR_FLATS_SMALL             :Small block of flats
+
+STR_HOTEL_OLD               :Hotel
+STR_HOTEL_SPLENDID          :Splendid hotel
+STR_HOTEL_PRL               :Hotel
+STR_HOTEL_NEW               :Hotel
+
+STR_SCHOOL_OLD              :School
+STR_SCHOOL_NEW              :School
+
+STR_HISTORIC_HOUSE          :Historic house
+STR_CATHEDRAL               :Cathedral
+STR_CATHEDRAL_LARGE         :Large cathedral
+STR_CAPITPL_CASTLE          :Capitol castle
+STR_TOWNHALL                :Town Hall
+STR_PKIN                    :Office centre "PKiN"
+STR_MARRIOTT                :Hotel "Marriott"
+STR_POLTEGOR                :Office centre "Poltegor"
+STR_COLLEGIUM_ALTUM         :"Collegium Altum" - Poznań University of Economics
+STR_INTERCONTINENTAL        :Hotel "Intercontinental"
+STR_ORCO_TOWER              :Office centre "ORCO Tower"
+STR_WTT                     :Office centre "Warsaw Trade Tower"
+
+STR_MONUMENT                :Monument
+STR_FOUNTAIN                :Fountain
+STR_TANK                    :Monument - tank T-34
+STR_PARK                    :Park
+STR_GOVERNMENT              :Government building

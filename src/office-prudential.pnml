@@ -1,0 +1,132 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+spriteset(sset_office_prudential_stages, "gfx/office-prudential.png") {
+    tmpl_sprite_ground(4,  460, 1)
+    tmpl_sprite_build40(4,  360, 1)
+    tmpl_sprite_build80(4,  220, 1)
+}
+spriteset(sset_office_prudential_ground, "gfx/office-prudential.png") {
+    tmpl_sprite_ground(4,  160, 1)
+}
+spriteset(sset_office_prudential, "gfx/office-prudential.png") {
+    tmpl_sprite_build80(4,   20, 1)
+}
+spriteset(sset_office_prudential_ground_snow, "gfx/office-prudential.png") {
+    tmpl_sprite_ground(80,  160, 1)
+}
+spriteset(sset_office_prudential_snow, "gfx/office-prudential.png") {
+    tmpl_sprite_build80(80,   20, 1)
+}
+spritelayout slay_office_prudential_stages {
+    ground {
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_office_prudential_stages(LOAD_TEMP(2));
+        xoffset: 0;
+        yoffset: 0;
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 72;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_office_prudential {
+    ground {
+        sprite: GROUNDSPRITE_CONCRETE;
+ 	}
+    childsprite {
+	    sprite: sset_office_prudential_ground;
+		always_draw: 1;
+	}
+    building {
+        sprite: sset_office_prudential;
+        xoffset: 0;
+        yoffset: 0;
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 80;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_office_prudential_snow {
+    ground {
+        sprite: GROUNDSPRITE_CONCRETE;
+ 	}
+    childsprite {
+	    sprite: sset_office_prudential_ground_snow;
+		always_draw: 1;
+	}
+    building {
+        sprite: sset_office_prudential_snow;
+        xoffset: 0;
+        yoffset: 0;
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 80;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_office_prudential_normal_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_office_prudential_stages;
+    return slay_office_prudential;
+}
+switch (FEAT_HOUSES, SELF, switch_office_prudential_snow_graphics, [
+    STORE_TEMP(construction_state, 2), construction_state]) {
+    0..2: return slay_office_prudential_stages;
+    return slay_office_prudential_snow;
+}
+
+switch (FEAT_HOUSES, SELF, switch_office_prudential_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_office_prudential_snow_graphics;
+    switch_office_prudential_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_office_prudential_location_check, same_house_count_town == 0) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_office_prudential_construction_check, is_city) {
+    1: return switch_office_prudential_location_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_office_prudential) {
+    property {
+        /* common properties */
+        substitute:                 0x00;
+        name:                       string(STR_HOUSE_HIGH);
+        override:                   0x00;
+        building_flags:             bitmask();
+        population:                 80;
+        mail_multiplier:            56;
+        accepted_cargos:            [[PASS, 7], [MAIL, 2], [GOOD, 4]];
+        local_authority_impact:     260;
+        removal_cost_multiplier:    175;
+        probability:                PLB_PROBABILITY * 0.5;
+        years_available:            [1931, 1965];
+        minimum_lifetime:           30;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_office_prudential_graphics;
+        construction_check: switch_office_prudential_construction_check;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

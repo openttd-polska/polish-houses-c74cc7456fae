@@ -1,0 +1,250 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define HOTEL1_TILE_SPRITES(Model, Tile, Xcoord, Ground) \
+spriteset(sset_hotel1_##Model##_##Tile, "gfx/hotel-type2.png") { \
+    tmpl_sprite_build80_east_##Tile(Xcoord,  20, 1) \
+} \
+spriteset(sset_hotel1_##Model##_##Tile##_ground, "gfx/hotel-type2.png") { \
+    tmpl_sprite_ground_east_##Tile(Xcoord, 180, 1) \
+} \
+spriteset(sset_hotel1_##Model##_##Tile##_snow, "gfx/hotel-type2.png") { \
+    tmpl_sprite_build80_east_##Tile(Xcoord+104, 20, 1) \
+} \
+spriteset(sset_hotel1_##Model##_##Tile##_ground_snow, "gfx/hotel-type2.png") { \
+    tmpl_sprite_ground_east_##Tile(Xcoord+104, 180, 1) \
+} \
+spritelayout slay_hotel1_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_##Ground; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define HOTEL1_SPRITES(Model, Xcoord, Ground) \
+    HOTEL1_TILE_SPRITES(Model, n, Xcoord, Ground) \
+    HOTEL1_TILE_SPRITES(Model, e, Xcoord, Ground) \
+
+/* Model #1 */
+HOTEL1_SPRITES(1, 4, NORMAL)
+/* Model #2 */
+HOTEL1_SPRITES(2, 224, NORMAL)
+/* Model #3 */
+HOTEL1_SPRITES(3, 444, CONCRETE)
+
+#define HOTEL1_CONSTR_STAGE_SPRITES(Model, Xcoord) \
+spriteset(sset_hotel1_constr_stage2_##Model, "gfx/hotel-type1.png") { \
+    tmpl_sprite_build80(Xcoord, 420, 1) \
+} \
+spriteset(sset_hotel1_constr_stage1_##Model, "gfx/hotel-type1.png") { \
+    tmpl_sprite_ground(Xcoord, 560, 1) \
+} \
+spritelayout slay_hotel1_constr_stage1_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_constr_stage1_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 8; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_hotel1_constr_stage2_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_constr_stage2_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+/* Model #1 */
+HOTEL1_CONSTR_STAGE_SPRITES(1_n, 4)
+HOTEL1_CONSTR_STAGE_SPRITES(1_e, 80)
+/* Model #2 */
+HOTEL1_CONSTR_STAGE_SPRITES(2_n, 156)
+HOTEL1_CONSTR_STAGE_SPRITES(2_e, 232)
+
+/* Switches */
+#define HOTEL1_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_hotel1_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_hotel1_##Model##_##Tile##_snow; \
+    slay_hotel1_##Model##_##Tile; \
+}
+#define HOTEL1_CLIMATE_SWITCH(Model) \
+    HOTEL1_TILE_CLIMATE_SWITCH(Model, n) \
+    HOTEL1_TILE_CLIMATE_SWITCH(Model, e) \
+
+/* Model #1 */
+HOTEL1_CLIMATE_SWITCH(1)
+/* Model #2 */
+HOTEL1_CLIMATE_SWITCH(2)
+/* Model #3 */
+HOTEL1_CLIMATE_SWITCH(3)
+
+switch (FEAT_HOUSES, SELF, switch_hotel1_old_n_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_1_n;
+    1..2: return slay_hotel1_constr_stage2_1_n;
+    return switch_hotel1_3_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_hotel1_old_e_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_1_e;
+    1..2: return slay_hotel1_constr_stage2_1_e;
+    return switch_hotel1_3_e_climate_graphics;
+}
+
+switch (FEAT_HOUSES, SELF, switch_hotel1_prl_n_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_2_n;
+    1..2: return slay_hotel1_constr_stage2_2_n;
+    return switch_hotel1_2_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_hotel1_prl_e_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_2_e;
+    1..2: return slay_hotel1_constr_stage2_2_e;
+    return switch_hotel1_2_e_climate_graphics;
+}
+
+switch (FEAT_HOUSES, SELF, switch_hotel1_new_n_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_2_n;
+    1..2: return slay_hotel1_constr_stage2_2_n;
+    return switch_hotel1_3_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_hotel1_new_e_graphics, construction_state) {
+    0: return slay_hotel1_constr_stage1_2_e;
+    1..2: return slay_hotel1_constr_stage2_2_e;
+    return switch_hotel1_3_e_climate_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_hotel1_old, -1, HOUSE_SIZE_1X2) {
+    property {
+        /* common properties */
+        substitute:                 0x07;
+        name:                       string(STR_HOTEL_OLD);
+//        override:                   0x07;
+        building_flags:             bitmask();
+        population:                 140;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     150;
+        removal_cost_multiplier:    180;
+        probability:                PLB_PROBABILITY * 0.25;
+        years_available:            [1930, 1964];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_hotel1_old_n_graphics;
+        graphics_east:      switch_hotel1_old_e_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_hotel1_prl, -1, HOUSE_SIZE_1X2) {
+    property {
+        /* common properties */
+        substitute:                 0x07;
+        name:                       string(STR_HOTEL_PRL);
+//        override:                   0x07;
+        building_flags:             bitmask();
+        population:                 140;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     150;
+        removal_cost_multiplier:    180;
+        probability:                PLB_PROBABILITY * 0.33;
+        years_available:            [1963, 1997];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_hotel1_prl_n_graphics;
+        graphics_east:      switch_hotel1_prl_e_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_hotel1_new, -1, HOUSE_SIZE_1X2) {
+    property {
+        /* common properties */
+        substitute:                 0x07;
+        name:                       string(STR_HOTEL_NEW);
+//        override:                   0x07;
+        building_flags:             bitmask();
+        population:                 140;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     150;
+        removal_cost_multiplier:    180;
+        probability:                PLB_PROBABILITY * 0.33;
+        years_available:            [1991, 9999];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_hotel1_new_n_graphics;
+        graphics_east:      switch_hotel1_new_e_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

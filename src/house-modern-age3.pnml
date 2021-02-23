@@ -1,0 +1,140 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define HOUSE_MODERN_AGE3_SPRITES(Model, Xcoord) \
+spriteset(sset_house_modern_age3_##Model##_stages, "gfx/house-modern-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  540, 1) \
+    tmpl_sprite_build40(Xcoord,  440, 1) \
+    tmpl_sprite_build40(Xcoord,  340, 1) \
+} \
+spriteset(sset_house_modern_age3_##Model##_ground, "gfx/house-modern-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_house_modern_age3_##Model, "gfx/house-modern-age3.png") { \
+    tmpl_sprite_build40(Xcoord,   20, 1) \
+} \
+spriteset(sset_house_modern_age3_##Model##_ground_snow, "gfx/house-modern-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spriteset(sset_house_modern_age3_##Model##_snow, "gfx/house-modern-age3.png") { \
+    tmpl_sprite_build40(Xcoord,  180, 1) \
+} \
+spritelayout slay_house_modern_age3_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_house_modern_age3_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_modern_age3_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_modern_age3_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_modern_age3_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_modern_age3_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_modern_age3_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_modern_age3_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+
+/* Model #1 */
+HOUSE_MODERN_AGE3_SPRITES(1, 4)
+/* Model #2 */
+HOUSE_MODERN_AGE3_SPRITES(2, 80)
+
+/* Switches */
+#define HOUSE_MODERN_AGE3_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_house_modern_age3_##Model##_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_modern_age3_##Model##_stages; \
+    return slay_house_modern_age3_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_house_modern_age3_##Model##_snow_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_modern_age3_##Model##_stages; \
+    return slay_house_modern_age3_##Model##_snow; \
+}
+/* Model #1 */
+HOUSE_MODERN_AGE3_SWITCH(1)
+/* Model #2 */
+HOUSE_MODERN_AGE3_SWITCH(2)
+
+random_switch (FEAT_HOUSES, SELF, switch_house_modern_age3_model_graphics) {
+    4: return switch_house_modern_age3_1_graphics;
+    4: return switch_house_modern_age3_2_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_modern_age3_model_snow_graphics) {
+    4: return switch_house_modern_age3_1_snow_graphics;
+    4: return switch_house_modern_age3_2_snow_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_modern_age3_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_modern_age3_model_snow_graphics;
+    switch_house_modern_age3_model_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_house_modern_age3) {
+    property {
+        /* common properties */
+        substitute:                 0x30;
+        name:                       string(STR_MODERN_TOWN_HOUSE);
+//        override:                   0x30;
+        building_flags:             bitmask();
+        population:                 16;
+        mail_multiplier:            8;
+        accepted_cargos:            [[PASS, 3], [MAIL, 1], [GOOD, 1]];
+        local_authority_impact:     80;
+        removal_cost_multiplier:    75;
+        probability:                PLB_PROBABILITY * 3;
+        years_available:            [1993, 9999];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_modern_age3_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

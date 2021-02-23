@@ -1,0 +1,183 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define HOUSE_HISTORIC_FILE     "gfx/house-historic.png"
+
+/* Sprites and spritelayouts */
+#define HOUSE_HISTORIC_SPRITES(Model, Xcoord) \
+spriteset(sset_house_historic_##Model, "gfx/house-historic.png") { \
+    tmpl_sprite_build40(Xcoord, 20, 1) \
+} \
+spriteset(sset_house_historic_##Model##_ground, "gfx/house-historic.png") { \
+    tmpl_sprite_ground(Xcoord, 120, 1) \
+} \
+spriteset(sset_house_historic_##Model##_snow, "gfx/house-historic.png") { \
+    tmpl_sprite_build40(Xcoord, 180, 1) \
+} \
+spriteset(sset_house_historic_##Model##_ground_snow, "gfx/house-historic.png") { \
+    tmpl_sprite_ground(Xcoord, 280, 1) \
+} \
+spritelayout slay_house_historic_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_house_historic_##Model##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_house_historic_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_house_historic_##Model##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_house_historic_##Model##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_house_historic_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+/* Model south */
+HOUSE_HISTORIC_SPRITES(s1, 4)
+HOUSE_HISTORIC_SPRITES(s2, 80)
+/* Model west */
+HOUSE_HISTORIC_SPRITES(w1, 156)
+HOUSE_HISTORIC_SPRITES(w2, 232)
+/* Model north */
+HOUSE_HISTORIC_SPRITES(n, 308)
+/* Model eest */
+HOUSE_HISTORIC_SPRITES(e1, 384)
+HOUSE_HISTORIC_SPRITES(e2, 460)
+/* Model center */
+HOUSE_HISTORIC_SPRITES(c1, 536)
+HOUSE_HISTORIC_SPRITES(c2, 612)
+/* Model point */
+HOUSE_HISTORIC_SPRITES(p1, 688)
+HOUSE_HISTORIC_SPRITES(p2, 764)
+HOUSE_HISTORIC_SPRITES(p3, 840)
+HOUSE_HISTORIC_SPRITES(p4, 916)
+
+/* Switches */
+#define HOUSE_HISTORIC_CLIMATE_SWITCH(Tile) \
+switch (FEAT_HOUSES, SELF, switch_house_historic_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: return slay_house_historic_##Tile##_snow; \
+    return slay_house_historic_##Tile; \
+}
+/* Model south */
+HOUSE_HISTORIC_CLIMATE_SWITCH(s1)
+HOUSE_HISTORIC_CLIMATE_SWITCH(s2)
+/* Model west */
+HOUSE_HISTORIC_CLIMATE_SWITCH(w1)
+HOUSE_HISTORIC_CLIMATE_SWITCH(w2)
+/* Model north */
+HOUSE_HISTORIC_CLIMATE_SWITCH(n)
+/* Model east */
+HOUSE_HISTORIC_CLIMATE_SWITCH(e1)
+HOUSE_HISTORIC_CLIMATE_SWITCH(e2)
+/* Model center */
+HOUSE_HISTORIC_CLIMATE_SWITCH(c1)
+HOUSE_HISTORIC_CLIMATE_SWITCH(c2)
+/* Model point */
+HOUSE_HISTORIC_CLIMATE_SWITCH(p1)
+HOUSE_HISTORIC_CLIMATE_SWITCH(p2)
+HOUSE_HISTORIC_CLIMATE_SWITCH(p3)
+HOUSE_HISTORIC_CLIMATE_SWITCH(p4)
+
+random_switch (FEAT_HOUSES, SELF, switch_house_historic_s_graphics) {
+    4: return switch_house_historic_s1_climate_graphics;
+    4: return switch_house_historic_s2_climate_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_historic_w_graphics) {
+    4: return switch_house_historic_w1_climate_graphics;
+    4: return switch_house_historic_w2_climate_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_historic_e_graphics) {
+    4: return switch_house_historic_e1_climate_graphics;
+    4: return switch_house_historic_e2_climate_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_historic_c_graphics) {
+    4: return switch_house_historic_c1_climate_graphics;
+    4: return switch_house_historic_c2_climate_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_historic_p_graphics) {
+    5: return switch_house_historic_p1_climate_graphics;
+    5: return switch_house_historic_p2_climate_graphics;
+    3: return switch_house_historic_p3_climate_graphics;
+    3: return switch_house_historic_p4_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_historic_n_graphics, 
+    nearby_tile_house_class(1, 1) == (CLASS_HISTORIC+256)) {
+    1: return switch_house_historic_n_climate_graphics;
+    return switch_house_historic_c_graphics;
+}
+    
+switch (FEAT_HOUSES, SELF, switch_house_historic_graphics, 
+    (nearby_tile_house_class(0, -1) == (CLASS_HISTORIC+256)) +
+    ((nearby_tile_house_class(-1, 0) == (CLASS_HISTORIC+256)) << 1) +
+    ((nearby_tile_house_class(0, 1) == (CLASS_HISTORIC+256)) << 2) +
+    ((nearby_tile_house_class(1, 0) == (CLASS_HISTORIC+256)) << 3)) {
+    0:    return switch_house_historic_p_graphics;
+    1..3: return switch_house_historic_s_graphics;
+    4:    return switch_house_historic_n_graphics;
+    5:    return switch_house_historic_c1_climate_graphics;
+    6:    return switch_house_historic_w_graphics;
+    8:    return switch_house_historic_n_graphics;
+    9:    return switch_house_historic_e_graphics;
+    10:   return switch_house_historic_c2_climate_graphics;
+    12:   return switch_house_historic_n_graphics;
+    return switch_house_historic_c_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_historic_construction_check, nearby_tile_height(0, 0) <= param_transition) {
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_house_historic) {
+    property {
+        /* common properties */
+        substitute:                 0x52;
+        name:                       string(STR_HISTORIC_HOUSE);
+//        override:                   0x52;
+        building_flags:             bitmask(HOUSE_FLAG_ONLY_SE, HOUSE_FLAG_PROTECTED);
+        population:                 85;
+        mail_multiplier:            45;
+        accepted_cargos:            [[PASS, 6], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     1000;
+        removal_cost_multiplier:    255;
+        probability:                MAX_PROBABILITY;
+        years_available:            [PLB_START_DATE, 9999];
+        minimum_lifetime:           255;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), ALL_CLIMATES | bitmask(ABOVE_SNOWLINE) & ~bitmask(CLIMATE_TOYLAND)];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_HISTORIC;
+    }
+
+    graphics {
+        default:            switch_house_historic_graphics;
+        construction_check: switch_house_historic_construction_check;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

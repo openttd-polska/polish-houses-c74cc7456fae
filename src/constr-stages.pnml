@@ -1,0 +1,407 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Universal spritelayouts for construction stages */
+/* Buldoger */
+spriteset(sset_constr_stage_buldoger, "gfx/constr-stages-buldoger.png") {
+    tmpl_sprite_build40(4,   20, 1)
+    tmpl_sprite_build40(80,  20, 1)
+    tmpl_sprite_build40(156, 20, 1)
+    tmpl_sprite_build40(232, 20, 1)
+    tmpl_sprite_build40(308, 20, 1)
+    tmpl_sprite_build40(384, 20, 1)
+}
+spritelayout slay_constr_stage_buldoger{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_buldoger(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 8;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal spritelayouts for construction stages */
+/* Square buildings */
+spriteset(sset_constr_stage_square_1, "gfx/constr-stages-square.png") {
+    tmpl_sprite_build40(4,   300, 1)
+    tmpl_sprite_build40(80,  300, 1)
+    tmpl_sprite_build40(156, 300, 1)
+    tmpl_sprite_build40(232, 300, 1)
+    tmpl_sprite_build40(308, 300, 1)
+    tmpl_sprite_build40(384, 300, 1)
+}
+spriteset(sset_constr_stage_square_2, "gfx/constr-stages-square.png") {
+    tmpl_sprite_build80(4,   160, 1)
+    tmpl_sprite_build80(80,  160, 1)
+    tmpl_sprite_build80(156, 160, 1)
+    tmpl_sprite_build80(232, 160, 1)
+    tmpl_sprite_build80(308, 160, 1)
+    tmpl_sprite_build80(384, 160, 1)
+}
+spriteset(sset_constr_stage_square_3, "gfx/constr-stages-square.png") {
+    tmpl_sprite_build80(4,   20, 1)
+    tmpl_sprite_build80(80,  20, 1)
+    tmpl_sprite_build80(156, 20, 1)
+    tmpl_sprite_build80(232, 20, 1)
+    tmpl_sprite_build80(308, 20, 1)
+    tmpl_sprite_build80(384, 20, 1)
+}
+spritelayout slay_constr_stage_square_1{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_square_1(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 40;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_square_2{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_square_2(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 64;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_square_3{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_square_3(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 80;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal spritelayouts for construction stages */
+/* Narrow buildings, type #1, left */
+spriteset(sset_constr_stage_narrow1l_1, "gfx/constr-stages-narrow1l.png") {
+    tmpl_sprite_build40(4,   160, 1)
+    tmpl_sprite_build40(80,  160, 1)
+    tmpl_sprite_build40(156, 160, 1)
+    tmpl_sprite_build40(232, 160, 1)
+    tmpl_sprite_build40(308, 160, 1)
+    tmpl_sprite_build40(384, 160, 1)
+}
+spriteset(sset_constr_stage_narrow1l_2, "gfx/constr-stages-narrow1l.png") {
+    tmpl_sprite_build80(4,   20, 1)
+    tmpl_sprite_build80(80,  20, 1)
+    tmpl_sprite_build80(156, 20, 1)
+    tmpl_sprite_build80(232, 20, 1)
+    tmpl_sprite_build80(308, 20, 1)
+    tmpl_sprite_build80(384, 20, 1)
+}
+spritelayout slay_constr_stage_narrow1l_1{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow1l_1(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 40;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_narrow1l_2{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow1l_2(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 64;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal spritelayouts for construction stages */
+/* Narrow buildings, type #2, left */
+spriteset(sset_constr_stage_narrow2l_1, "gfx/constr-stages-narrow2l.png") {
+    tmpl_sprite_build40(4,   160, 1)
+    tmpl_sprite_build40(80,  160, 1)
+    tmpl_sprite_build40(156, 160, 1)
+    tmpl_sprite_build40(232, 160, 1)
+    tmpl_sprite_build40(308, 160, 1)
+    tmpl_sprite_build40(384, 160, 1)
+}
+spriteset(sset_constr_stage_narrow2l_2, "gfx/constr-stages-narrow2l.png") {
+    tmpl_sprite_build80(4,   20, 1)
+    tmpl_sprite_build80(80,  20, 1)
+    tmpl_sprite_build80(156, 20, 1)
+    tmpl_sprite_build80(232, 20, 1)
+    tmpl_sprite_build80(308, 20, 1)
+    tmpl_sprite_build80(384, 20, 1)
+}
+spritelayout slay_constr_stage_narrow2l_1{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow2l_1(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 40;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_narrow2l_2{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow2l_2(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 64;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal spritelayouts for construction stages */
+/* Narrow buildings, type #1, right */
+spriteset(sset_constr_stage_narrow1r_1, "gfx/constr-stages-narrow1r.png") {
+    tmpl_sprite_build40(4,   160, 1)
+    tmpl_sprite_build40(80,  160, 1)
+    tmpl_sprite_build40(156, 160, 1)
+    tmpl_sprite_build40(232, 160, 1)
+    tmpl_sprite_build40(308, 160, 1)
+    tmpl_sprite_build40(384, 160, 1)
+}
+spriteset(sset_constr_stage_narrow1r_2, "gfx/constr-stages-narrow1r.png") {
+    tmpl_sprite_build80(4,   20, 1)
+    tmpl_sprite_build80(80,  20, 1)
+    tmpl_sprite_build80(156, 20, 1)
+    tmpl_sprite_build80(232, 20, 1)
+    tmpl_sprite_build80(308, 20, 1)
+    tmpl_sprite_build80(384, 20, 1)
+}
+spritelayout slay_constr_stage_narrow1r_1{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow1r_1(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 40;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_narrow1r_2{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow1r_2(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 64;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal spritelayouts for construction stages */
+/* Narrow buildings, type #1, right */
+spriteset(sset_constr_stage_narrow2r_1, "gfx/constr-stages-narrow2r.png") {
+    tmpl_sprite_build40(4,   160, 1)
+    tmpl_sprite_build40(80,  160, 1)
+    tmpl_sprite_build40(156, 160, 1)
+    tmpl_sprite_build40(232, 160, 1)
+    tmpl_sprite_build40(308, 160, 1)
+    tmpl_sprite_build40(384, 160, 1)
+}
+spriteset(sset_constr_stage_narrow2r_2, "gfx/constr-stages-narrow2r.png") {
+    tmpl_sprite_build80(4,   20, 1)
+    tmpl_sprite_build80(80,  20, 1)
+    tmpl_sprite_build80(156, 20, 1)
+    tmpl_sprite_build80(232, 20, 1)
+    tmpl_sprite_build80(308, 20, 1)
+    tmpl_sprite_build80(384, 20, 1)
+}
+spritelayout slay_constr_stage_narrow2r_1{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow2r_1(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 40;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_constr_stage_narrow2r_2{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CLEARED;
+ 	}
+    building {
+        sprite: sset_constr_stage_narrow2r_2(LOAD_TEMP(1));
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 64;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Universal switches */
+/* Buldoger */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_buldoger, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_buldoger;
+}
+/* Square buildings */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_square_1, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_square_1;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_square_2, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_square_2;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_square_3, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_square_3;
+}
+/* Narrow buildings, type #1, left */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow1l_1, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow1l_1;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow1l_2, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow1l_2;
+}
+/* Narrow buildings, type #2, left */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow2l_1, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow2l_1;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow2l_2, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow2l_2;
+}
+/* Narrow buildings, type #1, right */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow1r_1, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow1r_1;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow1r_2, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow1r_2;
+}
+/* Narrow buildings, type #2, right */
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow2r_1, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow2r_1;
+}
+switch (FEAT_HOUSES, SELF, switch_constr_stage_narrow2r_2, [
+    STORE_TEMP(animation_frame, 1),
+    STORE_TEMP((LOAD_TEMP(1) > 5) ? 11-animation_frame : LOAD_TEMP(1), 1),
+    STORE_TEMP((LOAD_TEMP(1) < 0) ? 0 : LOAD_TEMP(1), 1)]) {
+    return slay_constr_stage_narrow2r_2;
+}
+
+/* Animation control */
+switch(FEAT_HOUSES, SELF, switch_anim_control_75, extra_callback_info1&0x03) {
+    0: return CB_RESULT_DO_NOTHING;
+    return 0;     // frame #0 with probability 75%
+}

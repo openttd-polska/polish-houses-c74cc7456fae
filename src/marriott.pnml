@@ -1,0 +1,121 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define MARRIOTT_FILE  "gfx/marriott.png"
+
+/* Sprites and spritelayouts */
+#define MARRIOTT_TILE_SPRITES(Tile, Xcoord) \
+spriteset(sset_marriott_##Tile, MARRIOTT_FILE) { \
+    tmpl_sprite_build120_west_##Tile##_flags(Xcoord, 20, 1, ANIM) \
+} \
+spriteset(sset_marriott_##Tile##_ground, MARRIOTT_FILE) { \
+    tmpl_sprite_ground_west_##Tile(Xcoord, 220, 1) \
+} \
+spriteset(sset_marriott_##Tile##_snow, MARRIOTT_FILE) { \
+    tmpl_sprite_build120_west_##Tile##_flags(Xcoord+104, 20, 1, ANIM) \
+} \
+spriteset(sset_marriott_##Tile##_ground_snow, MARRIOTT_FILE) { \
+    tmpl_sprite_ground_west_##Tile(Xcoord+104, 220, 1) \
+} \
+spritelayout slay_marriott_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_marriott_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_marriott_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 120; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_marriott_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_marriott_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_marriott_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 120; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define MARRIOTT_SPRITES(Xcoord) \
+    MARRIOTT_TILE_SPRITES(n, Xcoord) \
+    MARRIOTT_TILE_SPRITES(w, Xcoord)
+
+MARRIOTT_SPRITES(4)
+
+/* Switches */
+#define MARRIOTT_TILE_CLIMATE_SWITCH(Tile) \
+switch (FEAT_HOUSES, SELF, switch_marriott_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_marriott_##Tile##_snow; \
+    slay_marriott_##Tile; \
+}
+#define MARRIOTT_CLIMATE_SWITCHES \
+    MARRIOTT_TILE_CLIMATE_SWITCH(n) \
+    MARRIOTT_TILE_CLIMATE_SWITCH(w)
+
+MARRIOTT_CLIMATE_SWITCHES
+
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_marriott_n_graphics, construction_state) {
+    0..2: return switch_constr_stage_buldoger;
+    return switch_marriott_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_marriott_w_graphics, construction_state) {
+    0: return switch_constr_stage_square_1;
+    1: return switch_constr_stage_square_2;
+    2: return switch_constr_stage_square_3;
+    return switch_marriott_w_climate_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_marriott, -1, HOUSE_SIZE_2X1) {
+    property {
+        /* common properties */
+        substitute:                 0x57;
+        name:                       string(STR_MARRIOTT);
+//        override:                   0x57;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 140;
+        mail_multiplier:            65;
+        accepted_cargos:            [];
+        local_authority_impact:     250;
+        removal_cost_multiplier:    170;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [1977, 9999];
+        minimum_lifetime:           LIFETIME_INDIVIDUAL;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_SKYSCRAPER;
+    }
+
+    graphics {
+        graphics_north:     switch_marriott_n_graphics;
+        graphics_west:      switch_marriott_w_graphics;
+        construction_check: switch_skyscraper_construction_check;
+        anim_control:       switch_anim_control_75;
+    }
+}

@@ -1,0 +1,207 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* graphics definition */
+template tmpl_sprite_ground_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x,         y,        68*z,      35*z,      -33*z,        -2*z,     flags]
+}
+template tmpl_sprite_ground(x, y, z) {
+    tmpl_sprite_ground_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build40_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x,         y,        68*z,      75*z,      -33*z,       -42*z,     flags]
+}
+template tmpl_sprite_build40(x, y, z) {
+    tmpl_sprite_build40_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x,         y,        68*z,     115*z,      -33*z,       -82*z,     flags]
+}
+template tmpl_sprite_build80(x, y, z) {
+    tmpl_sprite_build80_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build120_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x,         y,        68*z,     155*z,      -33*z,      -122*z,     flags]
+}
+template tmpl_sprite_build120(x, y, z) {
+    tmpl_sprite_build120_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build160_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x,         y,        68*z,     195*z,      -33*z,      -162*z,     flags]
+}
+template tmpl_sprite_build160(x, y, z) {
+    tmpl_sprite_build160_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+/* templates for complex buildings */
+/* two tile north-east ground */
+template tmpl_sprite_ground_east_n(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+2,       y+2,      64*z,      31*z,      -31*z,       0]
+}
+template tmpl_sprite_ground_east_e(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+34,      y+78,     64*z,      31*z,      -31*z,       0]
+}
+/* two tile north-east building */
+template tmpl_sprite_build40_east_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+2,      32*z,      71*z,       -31*z,       -40*z,     flags]
+}
+template tmpl_sprite_build40_east_e_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+2,      64*z,      87*z,       -31*z,       -56*z,     flags]
+}
+template tmpl_sprite_build40_east_n(x, y, z) {
+    tmpl_sprite_build40_east_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build40_east_e(x, y, z) {
+    tmpl_sprite_build40_east_e_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_east_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+2,      32*z,     111*z,       -31*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_east_e_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+2,      64*z,     127*z,       -31*z,       -96*z,     flags]
+}
+template tmpl_sprite_build80_east_n(x, y, z) {
+    tmpl_sprite_build80_east_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_east_e(x, y, z) {
+    tmpl_sprite_build80_east_e_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+
+/* two tile north-west ground */
+template tmpl_sprite_ground_west_n(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+34,      y+2,      64*z,      31*z,      -31*z,       0]
+}
+template tmpl_sprite_ground_west_w(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+2,       y+78,     64*z,      31*z,      -31*z,       0]
+}
+/* two tile north-west building */
+template tmpl_sprite_build40_west_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+66,      y+2,      32*z,      71*z,         1*z,       -40*z,     flags]
+}
+template tmpl_sprite_build40_west_w_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+2,      64*z,      87*z,       -31*z,       -56*z,     flags]
+}
+template tmpl_sprite_build40_west_n(x, y, z) {
+    tmpl_sprite_build40_west_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build40_west_w(x, y, z) {
+    tmpl_sprite_build40_west_w_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_west_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+66,      y+2,      32*z,     111*z,         1*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_west_w_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+2,      64*z,     127*z,       -31*z,       -96*z,     flags]
+}
+template tmpl_sprite_build80_west_n(x, y, z) {
+    tmpl_sprite_build80_west_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_west_w(x, y, z) {
+    tmpl_sprite_build80_west_w_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build120_west_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+66,      y+2,      32*z,     151*z,         1*z,      -120*z,     flags]
+}
+template tmpl_sprite_build120_west_w_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+2,      64*z,     167*z,       -31*z,      -136*z,     flags]
+}
+template tmpl_sprite_build120_west_n(x, y, z) {
+    tmpl_sprite_build120_west_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build120_west_w(x, y, z) {
+    tmpl_sprite_build120_west_w_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+
+/* four tile square ground */
+template tmpl_sprite_ground_quad_n(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+34,      y+2,      64*z,      31*z,      -31*z,       0]
+}
+template tmpl_sprite_ground_quad_s(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+34,      y+34,     64*z,      31*z,      -31*z,       0]
+}
+template tmpl_sprite_ground_quad_e(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+66,      y+98,     64*z,      31*z,      -31*z,       0]
+}
+template tmpl_sprite_ground_quad_w(x, y, z) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y]
+    [x+2,       y+98,     64*z,      31*z,      -31*z,       0]
+}
+/* four tile square building */
+template tmpl_sprite_build80_quad_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+2,      64*z,     32*z,       -31*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_quad_s_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+34,     64*z,    111*z,       -31*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_quad_e_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+98,      y+18,     32*z,    111*z,         1*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_quad_w_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+18,     32*z,    111*z,       -31*z,       -80*z,     flags]
+}
+template tmpl_sprite_build80_quad_n(x, y, z) {
+    tmpl_sprite_build80_quad_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_quad_s(x, y, z) {
+    tmpl_sprite_build80_quad_s_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_quad_e(x, y, z) {
+    tmpl_sprite_build80_quad_e_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build80_quad_w(x, y, z) {
+    tmpl_sprite_build80_quad_w_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build160_quad_n_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+2,      64*z,     32*z,       -31*z,      -160*z,     flags]
+}
+template tmpl_sprite_build160_quad_s_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+34,      y+34,     64*z,    191*z,       -31*z,      -160*z,     flags]
+}
+template tmpl_sprite_build160_quad_e_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+98,      y+18,     32*z,    191*z,         1*z,      -160*z,     flags]
+}
+template tmpl_sprite_build160_quad_w_flags(x, y, z, flags) {
+// [left_x,   upper_y,    width,    height,    offset_x,    offset_y    flags]
+    [x+2,       y+18,     32*z,    191*z,       -31*z,      -160*z,     flags]
+}
+template tmpl_sprite_build160_quad_n(x, y, z) {
+    tmpl_sprite_build160_quad_n_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build160_quad_s(x, y, z) {
+    tmpl_sprite_build160_quad_s_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build160_quad_e(x, y, z) {
+    tmpl_sprite_build160_quad_e_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}
+template tmpl_sprite_build160_quad_w(x, y, z) {
+    tmpl_sprite_build160_quad_w_flags(x, y, z, CROP | ALPHA | NOWHITE | NOANIM)
+}

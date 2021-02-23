@@ -1,0 +1,148 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define GOVERNMENT_FILE  "gfx/buildings-government.png"
+
+/* Sprites and spritelayouts */
+#define GOVERNMENT_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_gouvernment_##Model##_##Tile, GOVERNMENT_FILE) { \
+    tmpl_sprite_build80_quad_##Tile(Xcoord, 20, 1) \
+} \
+spriteset(sset_gouvernment_##Model##_##Tile##_ground, GOVERNMENT_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord, 200, 1) \
+} \
+spriteset(sset_gouvernment_##Model##_##Tile##_snow, GOVERNMENT_FILE) { \
+    tmpl_sprite_build80_quad_##Tile(Xcoord+136, 20, 1) \
+} \
+spriteset(sset_gouvernment_##Model##_##Tile##_ground_snow, GOVERNMENT_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord+136, 200, 1) \
+} \
+spritelayout slay_gouvernment_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_gouvernment_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_gouvernment_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_gouvernment_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_gouvernment_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_gouvernment_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define GOVERNMENT_SPRITES(Model, Xcoord) \
+    GOVERNMENT_TILE_SPRITES(Model, n, Xcoord) \
+    GOVERNMENT_TILE_SPRITES(Model, s, Xcoord) \
+    GOVERNMENT_TILE_SPRITES(Model, e, Xcoord) \
+    GOVERNMENT_TILE_SPRITES(Model, w, Xcoord)
+
+/* Model #1 */
+GOVERNMENT_SPRITES(1, 4)
+/* Model #2 */
+GOVERNMENT_SPRITES(2, 284)
+/* Model #3 */
+GOVERNMENT_SPRITES(3, 564)
+
+/* Switches */
+#define GOVERNMENT_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_gouvernment_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_gouvernment_##Model##_##Tile##_snow; \
+    slay_gouvernment_##Model##_##Tile; \
+} \
+switch (FEAT_HOUSES, SELF, switch_gouvernment_##Model##_##Tile##_graphics, construction_state) { \
+    0: return switch_gouvernment_##Model##_##Tile##_climate_graphics; \
+    1..2: return switch_gouvernment_##Model##_##Tile##_climate_graphics; \
+    return switch_gouvernment_##Model##_##Tile##_climate_graphics; \
+}
+#define GOVERNMENT_CLIMATE_SWITCHES(Model) \
+    GOVERNMENT_TILE_CLIMATE_SWITCH(Model, n) \
+    GOVERNMENT_TILE_CLIMATE_SWITCH(Model, s) \
+    GOVERNMENT_TILE_CLIMATE_SWITCH(Model, e) \
+    GOVERNMENT_TILE_CLIMATE_SWITCH(Model, w)
+
+/* Model #1 */
+GOVERNMENT_CLIMATE_SWITCHES(1)
+/* Model #2 */
+GOVERNMENT_CLIMATE_SWITCHES(2)
+/* Model #3 */
+GOVERNMENT_CLIMATE_SWITCHES(3)
+
+#define GOVERNMENT_TILE_GRAPHICS_SWITCH(Tile) \
+random_switch (FEAT_HOUSES, SELF, switch_gouvernment_##Tile##_graphics) { \
+    5: return switch_gouvernment_1_##Tile##_graphics; \
+    6: return switch_gouvernment_2_##Tile##_graphics; \
+    5: return switch_gouvernment_3_##Tile##_graphics; \
+}
+#define GOVERNMENT_GRAPHICS_SWITCHES \
+    GOVERNMENT_TILE_GRAPHICS_SWITCH(n) \
+    GOVERNMENT_TILE_GRAPHICS_SWITCH(s) \
+    GOVERNMENT_TILE_GRAPHICS_SWITCH(e) \
+    GOVERNMENT_TILE_GRAPHICS_SWITCH(w) \
+
+GOVERNMENT_GRAPHICS_SWITCHES
+
+switch (FEAT_HOUSES, SELF, switch_gouvernment_location_check, ((nearby_tile_height(0, 0) <= param_transition)) && ((nearby_tile_class(1, 2) == TILE_CLASS_ROAD) || (nearby_tile_class(2, 1) == TILE_CLASS_ROAD))) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_gouvernment_construction_check, is_city) {
+    1: return switch_gouvernment_location_check;
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_gouvernment, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_GOVERNMENT);
+//        override:                   0x28;
+        building_flags:             bitmask();
+        population:                 56;
+        mail_multiplier:            160;
+        accepted_cargos:            [[PASS, 4], [MAIL, 8], [GOOD, 4]];
+        local_authority_impact:     500;
+        removal_cost_multiplier:    255;
+        probability:                PLB_PROBABILITY * 3;
+        years_available:            [1940, 1985];
+        minimum_lifetime:           LIFETIME_GOVERNMENT;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_gouvernment_n_graphics;
+        graphics_south:     switch_gouvernment_s_graphics;
+        graphics_east:      switch_gouvernment_e_graphics;
+        graphics_west:      switch_gouvernment_w_graphics;
+        construction_check: switch_gouvernment_construction_check;
+    }
+}

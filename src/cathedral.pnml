@@ -1,0 +1,98 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites */
+spriteset(sset_cathedral_n, "gfx/cathedral.png") {
+    tmpl_sprite_build80(80,  20, 1)
+}
+spriteset(sset_cathedral_n_ground, "gfx/cathedral.png") {
+    tmpl_sprite_ground(80, 160, 1)
+}
+spriteset(sset_cathedral_w, "gfx/cathedral.png") {
+    tmpl_sprite_build80(4,   20, 1)
+}
+spriteset(sset_cathedral_w_ground, "gfx/cathedral.png") {
+    tmpl_sprite_ground(4,  160, 1)
+}
+spritelayout slay_cathedral_n{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CONCRETE;
+ 	}
+    childsprite {
+        sprite: sset_cathedral_n_ground;
+        always_draw: 1;
+    }
+    building {
+        sprite: sset_cathedral_n;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 56;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+spritelayout slay_cathedral_w{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CONCRETE;
+ 	}
+    childsprite {
+        sprite: sset_cathedral_w_ground;
+        always_draw: 1;
+    }
+    building {
+        sprite: sset_cathedral_w;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 56;
+        recolour_mode: RECOLOUR_REMAP;
+        palette: PALETTE_USE_DEFAULT;
+    }
+}
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_cathedral_count_check, (same_house_count_town < 1) & (nearby_tile_height(0, 0) <= param_transition)) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_cathedral_construction_check, is_city) {
+    1: return switch_cathedral_count_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_cathedral, -1, HOUSE_SIZE_2X1) {
+    property {
+        /* common properties */
+        substitute:                 0x57;
+        name:                       string(STR_CATHEDRAL);
+//        override:                   0x57;
+        building_flags:             bitmask(HOUSE_FLAG_ONLY_SE, HOUSE_FLAG_PROTECTED, HOUSE_FLAG_CHURCH);
+        population:                 10;
+        mail_multiplier:            5;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2]];
+        local_authority_impact:     1000;
+        removal_cost_multiplier:    255;
+        probability:                PLB_PROBABILITY * 0.5;
+        years_available:            [PLB_START_DATE, 9999];
+        minimum_lifetime:           255;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_HISTORIC;
+    }
+
+    graphics {
+        graphics_north:     slay_cathedral_n;
+        graphics_west:      slay_cathedral_w;
+        construction_check: switch_cathedral_construction_check;
+    }
+}

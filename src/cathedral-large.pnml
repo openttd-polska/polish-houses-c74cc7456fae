@@ -1,0 +1,136 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define CATHEDRAL_LARGE_FILE    "gfx/cathedral-large.png"
+
+/* Sprites and spritelayouts */
+#define CATHEDRAL_LARGE_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_cathedral_large_##Model##_##Tile, CATHEDRAL_LARGE_FILE) { \
+    tmpl_sprite_build80_quad_##Tile##_flags(Xcoord, 20, 1, ANIM) \
+} \
+spriteset(sset_cathedral_large_##Model##_##Tile##_ground, CATHEDRAL_LARGE_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord, 200, 1) \
+} \
+spriteset(sset_cathedral_large_##Model##_##Tile##_snow, CATHEDRAL_LARGE_FILE) { \
+    tmpl_sprite_build80_quad_##Tile##_flags(Xcoord+136, 20, 1, ANIM) \
+} \
+spriteset(sset_cathedral_large_##Model##_##Tile##_ground_snow, CATHEDRAL_LARGE_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord+136, 200, 1) \
+} \
+spritelayout slay_cathedral_large_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_cathedral_large_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_cathedral_large_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 72; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_cathedral_large_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_cathedral_large_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_cathedral_large_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 72; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define CATHEDRAL_LARGE_SPRITES(Model, Xcoord) \
+    CATHEDRAL_LARGE_TILE_SPRITES(Model, n, Xcoord) \
+    CATHEDRAL_LARGE_TILE_SPRITES(Model, s, Xcoord) \
+    CATHEDRAL_LARGE_TILE_SPRITES(Model, e, Xcoord) \
+    CATHEDRAL_LARGE_TILE_SPRITES(Model, w, Xcoord)
+
+/* Model Radom */
+CATHEDRAL_LARGE_SPRITES(radom, 4)
+/* Model £owicz */
+CATHEDRAL_LARGE_SPRITES(lowicz, 276)
+
+/* Switches */
+#define CATHEDRAL_LARGE_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_cathedral_large_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_cathedral_large_##Model##_##Tile##_snow; \
+    slay_cathedral_large_##Model##_##Tile; \
+}
+#define CATHEDRAL_LARGE_CLIMATE_SWITCHES(Model) \
+    CATHEDRAL_LARGE_TILE_CLIMATE_SWITCH(Model, n) \
+    CATHEDRAL_LARGE_TILE_CLIMATE_SWITCH(Model, s) \
+    CATHEDRAL_LARGE_TILE_CLIMATE_SWITCH(Model, e) \
+    CATHEDRAL_LARGE_TILE_CLIMATE_SWITCH(Model, w)
+
+/* Model Radom */
+CATHEDRAL_LARGE_CLIMATE_SWITCHES(radom)
+/* Model £owicz */
+CATHEDRAL_LARGE_CLIMATE_SWITCHES(lowicz)
+
+#define CATHEDRAL_LARGE_GRAPHICS_SWITCH(Tile) \
+random_switch (FEAT_HOUSES, SELF, switch_cathedral_large_##Tile##_graphics) { \
+    4: return switch_cathedral_large_radom_##Tile##_climate_graphics; \
+    4: return switch_cathedral_large_lowicz_##Tile##_climate_graphics; \
+}
+
+CATHEDRAL_LARGE_GRAPHICS_SWITCH(n)
+CATHEDRAL_LARGE_GRAPHICS_SWITCH(s)
+CATHEDRAL_LARGE_GRAPHICS_SWITCH(e)
+CATHEDRAL_LARGE_GRAPHICS_SWITCH(w)
+
+switch (FEAT_HOUSES, SELF, switch_cathedral_large_location_check, (nearby_tile_height(0, 0) <= param_transition) && ((nearby_tile_class(2, 1) == TILE_CLASS_ROAD) || (nearby_tile_class(1, 2) == TILE_CLASS_ROAD))) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_cathedral_large_construction_check, is_city) {
+    1: return switch_cathedral_large_location_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_cathedral_large, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_CATHEDRAL_LARGE);
+//        override:                   0x28;
+        building_flags:             bitmask(HOUSE_FLAG_ONLY_SE, HOUSE_FLAG_PROTECTED, HOUSE_FLAG_CHURCH);
+        population:                 40;
+        mail_multiplier:            40;
+        accepted_cargos:            [[PASS, 8], [MAIL, 4], [GOOD, 4]];
+        local_authority_impact:     1000;
+        removal_cost_multiplier:    255;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [PLB_START_DATE, 9999];
+        minimum_lifetime:           255;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_cathedral_large_n_graphics;
+        graphics_south:     switch_cathedral_large_s_graphics;
+        graphics_east:      switch_cathedral_large_e_graphics;
+        graphics_west:      switch_cathedral_large_w_graphics;
+        construction_check: switch_cathedral_large_construction_check;
+    }
+}

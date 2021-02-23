@@ -1,0 +1,183 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define HOTEL1_SPLENDID_FILE    "gfx/hotels-age1-type3.png"
+
+/* Sprites and spritelayouts */
+#define HOTEL1_SPLENDID_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_hotel1_splendid_##Model##_##Tile, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_build80_east_##Tile(Xcoord,  20, 1) \
+} \
+spriteset(sset_hotel1_splendid_##Model##_##Tile##_ground, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord, 180, 1) \
+} \
+spriteset(sset_hotel1_splendid_##Model##_##Tile##_snow, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_build80_east_##Tile(Xcoord+104, 20, 1) \
+} \
+spriteset(sset_hotel1_splendid_##Model##_##Tile##_ground_snow, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord+104, 180, 1) \
+} \
+spritelayout slay_hotel1_splendid_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_splendid_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_splendid_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_splendid_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_hotel1_splendid_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_hotel1_splendid_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define HOTEL1_SPLENDID_SPRITES(Model, Xcoord) \
+    HOTEL1_SPLENDID_TILE_SPRITES(Model, n, Xcoord) \
+    HOTEL1_SPLENDID_TILE_SPRITES(Model, e, Xcoord) \
+
+/* Model #1 */
+HOTEL1_SPLENDID_SPRITES(1, 4)
+/* Model #2 */
+HOTEL1_SPLENDID_SPRITES(2, 224)
+
+#define HOTEL1_SPLENDID_CONSTR_STAGE_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_hotel1_splendid_constr_stage2_##Model##_##Tile, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_build40_east_##Tile(Xcoord, 320, 1) \
+} \
+spriteset(sset_hotel1_splendid_constr_stage1_##Model##_##Tile, HOTEL1_SPLENDID_FILE) { \
+    tmpl_sprite_ground_east_##Tile(Xcoord, 440, 1) \
+} \
+spritelayout slay_hotel1_splendid_constr_stage1_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_splendid_constr_stage1_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 8; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_hotel1_splendid_constr_stage2_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_hotel1_splendid_constr_stage2_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define HOTEL1_SPLENDID_CONSTR_STAGE_SPRITES(Model, Xcoord) \
+    HOTEL1_SPLENDID_CONSTR_STAGE_TILE_SPRITES(Model, n, Xcoord) \
+    HOTEL1_SPLENDID_CONSTR_STAGE_TILE_SPRITES(Model, e, Xcoord) \
+
+/* Model #1 */
+HOTEL1_SPLENDID_CONSTR_STAGE_SPRITES(1, 4)
+/* Model #2 */
+HOTEL1_SPLENDID_CONSTR_STAGE_SPRITES(2, 224)
+
+/* Switches */
+#define HOTEL1_SPLENDID_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_hotel1_splendid_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_hotel1_splendid_##Model##_##Tile##_snow; \
+    slay_hotel1_splendid_##Model##_##Tile; \
+} \
+switch (FEAT_HOUSES, SELF, switch_hotel1_splendid_##Model##_##Tile##_graphics, construction_state) { \
+    0: return slay_hotel1_splendid_constr_stage1_##Model##_##Tile; \
+    1..2: return slay_hotel1_splendid_constr_stage2_##Model##_##Tile; \
+    return switch_hotel1_splendid_##Model##_##Tile##_climate_graphics; \
+}
+#define HOTEL1_SPLENDID_CLIMATE_SWITCHES(Model) \
+    HOTEL1_SPLENDID_TILE_CLIMATE_SWITCH(Model, n) \
+    HOTEL1_SPLENDID_TILE_CLIMATE_SWITCH(Model, e) \
+
+/* Model #1 */
+HOTEL1_SPLENDID_CLIMATE_SWITCHES(1)
+/* Model #2 */
+HOTEL1_SPLENDID_CLIMATE_SWITCHES(2)
+
+#define HOTEL1_SPLENDID_TILE_GRAPHICS_SWITCH(Tile) \
+random_switch (FEAT_HOUSES, SELF, switch_hotel1_splendid_##Tile##_graphics) { \
+    2: return switch_hotel1_splendid_1_##Tile##_graphics; \
+    2: return switch_hotel1_splendid_2_##Tile##_graphics; \
+}
+#define HOTEL1_SPLENDID_GRAPHICS_SWITCHES \
+    HOTEL1_SPLENDID_TILE_GRAPHICS_SWITCH(n) \
+    HOTEL1_SPLENDID_TILE_GRAPHICS_SWITCH(e) \
+
+HOTEL1_SPLENDID_GRAPHICS_SWITCHES
+
+switch (FEAT_HOUSES, SELF, switch_hotel1_splendid_road_check, (nearby_tile_class(1, 1) == TILE_CLASS_ROAD) && (nearby_tile_class(0, 2) == TILE_CLASS_ROAD)) {
+    1: return switch_hotel_distance_check;
+    return 0;
+}
+switch (FEAT_HOUSES, PARENT, switch_hotel1_splendid_construction_check, is_city) {
+    1: return switch_hotel1_splendid_road_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_hotel1_splendid, -1, HOUSE_SIZE_1X2) {
+    property {
+        /* common properties */
+        substitute:                 0x07;
+        name:                       string(STR_HOTEL_SPLENDID);
+//        override:                   0x07;
+        building_flags:             bitmask();
+        population:                 140;
+        mail_multiplier:            22;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     150;
+        removal_cost_multiplier:    180;
+        probability:                PLB_PROBABILITY * 4;
+        years_available:            [1910, 1945];
+        minimum_lifetime:           LIFETIME_HOTEL;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_HOTEL;
+    }
+
+    graphics {
+        graphics_north:     switch_hotel1_splendid_n_graphics;
+        graphics_east:      switch_hotel1_splendid_e_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        construction_check: switch_hotel1_splendid_construction_check;
+    }
+}

@@ -1,0 +1,102 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define SPIRE_FILE      "gfx/spire.png"
+/* Sprites */
+spriteset(sset_spire, SPIRE_FILE) {
+    tmpl_sprite_build160_flags(4, 20, 1, ANIM)
+}
+spriteset(sset_spire_ground, SPIRE_FILE) {
+    tmpl_sprite_ground(4, 240, 1)
+}
+spriteset(sset_spire_snow, SPIRE_FILE) {
+    tmpl_sprite_build160_flags(80, 20, 1, ANIM)
+}
+spriteset(sset_spire_snow_ground, SPIRE_FILE) {
+    tmpl_sprite_ground(80, 240, 1)
+}
+spritelayout slay_spire{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_CONCRETE;
+ 	}
+    childsprite {
+	    sprite: sset_spire_ground;
+		always_draw: 1;
+	}
+    building {
+        sprite: sset_spire;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 160;
+        recolour_mode: RECOLOUR_NONE;
+    }
+}
+spritelayout slay_spire_snow{
+    ground {
+    // normal ground sprite - always draw
+        sprite: GROUNDSPRITE_SNOW;
+ 	}
+    childsprite {
+	    sprite: sset_spire_snow_ground;
+		always_draw: 1;
+	}
+    building {
+        sprite: sset_spire_snow;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+        xextent: 16;
+        yextent: 16;
+        zextent: 160;
+        recolour_mode: RECOLOUR_NONE;
+    }
+}
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_spire_climate_graphics, terrain_type) {
+    TILETYPE_SNOW: return slay_spire_snow;
+    return slay_spire;
+}
+switch (FEAT_HOUSES, SELF, switch_spire_graphics, construction_state) {
+    0: return switch_constr_stage_square_1;
+    1: return switch_constr_stage_square_2;
+    2: return switch_constr_stage_square_3;
+    return switch_spire_climate_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_spire) {
+    property {
+        /* common properties */
+        substitute:                 0x24;
+        name:                       string(STR_WTT);
+//        override:                   0x24;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 75;
+        mail_multiplier:            56;
+        accepted_cargos:            [[PASS, 5], [MAIL, 5], [GOOD, 4]];
+        local_authority_impact:     350;
+        removal_cost_multiplier:    250;
+        probability:                PLB_PROBABILITY * 0.75;
+        years_available:            [2011, 9999];
+        minimum_lifetime:           LIFETIME_INDIVIDUAL;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_SKYSCRAPER;
+    }
+
+    graphics {
+        default:            switch_spire_graphics;
+        construction_check: switch_skyscraper_construction_check;
+        anim_control:       switch_anim_control_75;
+    }
+}

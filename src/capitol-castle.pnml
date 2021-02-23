@@ -1,0 +1,119 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define CAPITOL_CASTLE_FILE  "gfx/capitol-castle.png"
+
+/* Sprites and spritelayouts */
+#define CAPITOL_CASTLE_TILE_SPRITES(Tile, Xcoord) \
+spriteset(sset_capitol_castle_##Tile, CAPITOL_CASTLE_FILE) { \
+    tmpl_sprite_build80_quad_##Tile##_flags(Xcoord, 20, 1, ANIM) \
+} \
+spriteset(sset_capitol_castle_##Tile##_ground, CAPITOL_CASTLE_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord, 200, 1) \
+} \
+spriteset(sset_capitol_castle_##Tile##_snow, CAPITOL_CASTLE_FILE) { \
+    tmpl_sprite_build80_quad_##Tile##_flags(Xcoord+136, 20, 1, ANIM) \
+} \
+spriteset(sset_capitol_castle_##Tile##_ground_snow, CAPITOL_CASTLE_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord+136, 200, 1) \
+} \
+spritelayout slay_capitol_castle_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_capitol_castle_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_capitol_castle_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_capitol_castle_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_capitol_castle_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_capitol_castle_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 48; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define CAPITOL_CASTLE_SPRITES(Xcoord) \
+    CAPITOL_CASTLE_TILE_SPRITES(n, Xcoord) \
+    CAPITOL_CASTLE_TILE_SPRITES(s, Xcoord) \
+    CAPITOL_CASTLE_TILE_SPRITES(e, Xcoord) \
+    CAPITOL_CASTLE_TILE_SPRITES(w, Xcoord)
+
+CAPITOL_CASTLE_SPRITES(4)
+
+/* Switches */
+#define CAPITOL_CASTLE_TILE_CLIMATE_SWITCH(Tile) \
+switch (FEAT_HOUSES, SELF, switch_capitol_castle_##Tile##_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_capitol_castle_##Tile##_snow; \
+    slay_capitol_castle_##Tile; \
+}
+#define CAPITOL_CASTLE_CLIMATE_SWITCHES \
+    CAPITOL_CASTLE_TILE_CLIMATE_SWITCH(n) \
+    CAPITOL_CASTLE_TILE_CLIMATE_SWITCH(s) \
+    CAPITOL_CASTLE_TILE_CLIMATE_SWITCH(e) \
+    CAPITOL_CASTLE_TILE_CLIMATE_SWITCH(w)
+
+CAPITOL_CASTLE_CLIMATE_SWITCHES
+
+switch (FEAT_HOUSES, SELF, switch_capitol_castle_location_check, (same_house_count_map < 1) && (nearby_tile_height(0, 0) <= param_transition) && ((nearby_tile_class(1, 2) == TILE_CLASS_ROAD) || (nearby_tile_class(2, 1) == TILE_CLASS_ROAD))) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_capitol_castle_construction_check, is_city) {
+    1: return switch_capitol_castle_location_check;
+    return 0;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_capitol_castle, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_CAPITPL_CASTLE);
+//        override:                   0x28;
+        building_flags:             bitmask(HOUSE_FLAG_ONLY_SE, HOUSE_FLAG_PROTECTED);
+        population:                 80;
+        mail_multiplier:            40;
+        accepted_cargos:            [[PASS, 8], [MAIL, 4], [GOOD, 4]];
+        local_authority_impact:     1000;
+        removal_cost_multiplier:    255;
+        probability:                PLB_PROBABILITY;
+        years_available:            [PLB_START_DATE, 9999];
+        minimum_lifetime:           255;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_capitol_castle_n_graphics;
+        graphics_south:     switch_capitol_castle_s_graphics;
+        graphics_east:      switch_capitol_castle_e_graphics;
+        graphics_west:      switch_capitol_castle_w_graphics;
+        construction_check: switch_capitol_castle_construction_check;
+    }
+}

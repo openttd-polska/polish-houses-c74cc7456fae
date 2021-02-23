@@ -1,0 +1,139 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define HOUSE_TOWN_RED2_SPRITES(Model, Xcoord) \
+spriteset(sset_house_town_red2_##Model##_stages, "gfx/house-town-red2.png") { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+    tmpl_sprite_build40(Xcoord,  180, 1) \
+    tmpl_sprite_build40(Xcoord,  180, 1) \
+} \
+spriteset(sset_house_town_red2_##Model##_ground, "gfx/house-town-red2.png") { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_house_town_red2_##Model, "gfx/house-town-red2.png") { \
+    tmpl_sprite_build40(Xcoord,   20, 1) \
+} \
+spriteset(sset_house_town_red2_##Model##_ground_snow, "gfx/house-town-red2.png") { \
+    tmpl_sprite_ground(Xcoord+76,  120, 1) \
+} \
+spriteset(sset_house_town_red2_##Model##_snow, "gfx/house-town-red2.png") { \
+    tmpl_sprite_build40(Xcoord+76,   20, 1) \
+} \
+spritelayout slay_house_town_red2_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_house_town_red2_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_town_red2_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_town_red2_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_town_red2_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_house_town_red2_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_town_red2_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_town_red2_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+/* Model #1 */
+HOUSE_TOWN_RED2_SPRITES(1, 4)
+/* Model #2 */
+HOUSE_TOWN_RED2_SPRITES(2, 156)
+
+/* Switches */
+#define HOUSE_TOWN_RED2_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_house_town_red2_##Model##_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_town_red2_##Model##_stages; \
+    return slay_house_town_red2_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_house_town_red2_##Model##_snow_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_town_red2_##Model##_stages; \
+    return slay_house_town_red2_##Model##_snow; \
+}
+/* Model #1 */
+HOUSE_TOWN_RED2_SWITCH(1)
+/* Model #2 */
+HOUSE_TOWN_RED2_SWITCH(2)
+
+random_switch (FEAT_HOUSES, SELF, switch_house_town_red2_normal_graphics) {
+    4: return switch_house_town_red2_1_graphics;
+    4: return switch_house_town_red2_2_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_town_red2_snow_graphics) {
+    4: return switch_house_town_red2_1_snow_graphics;
+    4: return switch_house_town_red2_2_snow_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_town_red2_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_town_red2_snow_graphics;
+    switch_house_town_red2_normal_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_house_town_red2) {
+    property {
+        /* common properties */
+        substitute:                 0x0F;
+        name:                       string(STR_HOUSE_FLATS_SHOPS);
+        override:                   0x0F;
+        building_flags:             bitmask();
+        population:                 78;
+        mail_multiplier:            43;
+        accepted_cargos:            [[PASS, 6], [MAIL, 2], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    105;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [PLB_START_DATE, 1970];
+        minimum_lifetime:           LIFETIME_MAJOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_town_red2_graphics;
+        anim_control:       0;
+    }
+}

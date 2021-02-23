@@ -1,0 +1,136 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define TOWNHALL1_TILE_SPRITES(Model, Tile, Xcoord) \
+spriteset(sset_townhall1_##Model##_##Tile, "gfx/townhall-type1.png") { \
+    tmpl_sprite_build80_quad_##Tile(Xcoord,  20, 1) \
+} \
+spriteset(sset_townhall1_##Model##_##Tile##_ground, "gfx/townhall-type1.png") { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord,  200, 1) \
+} \
+spriteset(sset_townhall1_##Model##_##Tile##_snow, "gfx/townhall-type1.png") { \
+    tmpl_sprite_build80_quad_##Tile(Xcoord+136,  20, 1) \
+} \
+spriteset(sset_townhall1_##Model##_##Tile##_ground_snow, "gfx/townhall-type1.png") { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord+136,  200, 1) \
+} \
+spritelayout slay_townhall1_##Model##_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_townhall1_##Model##_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_townhall1_##Model##_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_townhall1_##Model##_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_townhall1_##Model##_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_townhall1_##Model##_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define TOWNHALL1_SPRITES(Model, Xcoord) \
+    TOWNHALL1_TILE_SPRITES(Model, n, Xcoord) \
+    TOWNHALL1_TILE_SPRITES(Model, s, Xcoord) \
+    TOWNHALL1_TILE_SPRITES(Model, e, Xcoord) \
+    TOWNHALL1_TILE_SPRITES(Model, w, Xcoord)
+
+/* Model #1 */
+TOWNHALL1_SPRITES(1, 4)
+/* Model #2 */
+TOWNHALL1_SPRITES(2, 284)
+/* Model #3 */
+TOWNHALL1_SPRITES(3, 564)
+
+/* Switches */
+#define TOWNHALL1_TILE_CLIMATE_SWITCH(Model, Tile) \
+switch (FEAT_HOUSES, SELF, switch_townhall1_##Model##_##Tile##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_townhall1_##Model##_##Tile##_snow; \
+    slay_townhall1_##Model##_##Tile; \
+}
+#define TOWNHALL1_CLIMATE_SWITCHES(Model) \
+    TOWNHALL1_TILE_CLIMATE_SWITCH(Model, n) \
+    TOWNHALL1_TILE_CLIMATE_SWITCH(Model, s) \
+    TOWNHALL1_TILE_CLIMATE_SWITCH(Model, e) \
+    TOWNHALL1_TILE_CLIMATE_SWITCH(Model, w)
+
+/* Model #1 */
+TOWNHALL1_CLIMATE_SWITCHES(1)
+/* Model #2 */
+TOWNHALL1_CLIMATE_SWITCHES(2)
+/* Model #3 */
+TOWNHALL1_CLIMATE_SWITCHES(3)
+
+#define TOWNHALL1_GRAPHICS_SWITCH(Tile) \
+random_switch (FEAT_HOUSES, SELF, switch_townhall1_##Tile##_graphics) { \
+    3: return switch_townhall1_1_##Tile##_climate_graphics; \
+    3: return switch_townhall1_2_##Tile##_climate_graphics; \
+    2: return switch_townhall1_3_##Tile##_climate_graphics; \
+}
+
+TOWNHALL1_GRAPHICS_SWITCH(n)
+TOWNHALL1_GRAPHICS_SWITCH(s)
+TOWNHALL1_GRAPHICS_SWITCH(e)
+TOWNHALL1_GRAPHICS_SWITCH(w)
+
+switch (FEAT_HOUSES, SELF, switch_townhall1_construction_check, (same_house_count_town < 1) & (nearby_tile_height(0, 0) <= param_transition)) {
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_townhall1, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_TOWNHALL);
+//        override:                   0x28;
+        building_flags:             bitmask(HOUSE_FLAG_ONLY_SE, HOUSE_FLAG_PROTECTED);
+        population:                 25;
+        mail_multiplier:            35;
+        accepted_cargos:            [[PASS, 4], [MAIL, 6], [GOOD, 2]];
+        local_authority_impact:     1000;
+        removal_cost_multiplier:    255;
+        probability:                MAX_PROBABILITY;
+        years_available:            [PLB_START_DATE, 9999];
+        minimum_lifetime:           255;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_townhall1_n_graphics;
+        graphics_south:     switch_townhall1_s_graphics;
+        graphics_east:      switch_townhall1_e_graphics;
+        graphics_west:      switch_townhall1_w_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+        construction_check: switch_townhall1_construction_check;
+    }
+}

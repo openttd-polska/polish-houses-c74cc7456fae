@@ -1,0 +1,241 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define SCHOOL1_SPRITES(Model, Xcoord) \
+spriteset(sset_school1_##Model, "gfx/school-type1.png") { \
+    tmpl_sprite_build40(Xcoord,  20, 1) \
+} \
+spriteset(sset_school1_##Model##_ground, "gfx/school-type1.png") { \
+    tmpl_sprite_ground(Xcoord, 120, 1) \
+} \
+spriteset(sset_school1_##Model##_snow, "gfx/school-type1.png") { \
+    tmpl_sprite_build40(Xcoord, 180, 1) \
+} \
+spriteset(sset_school1_##Model##_ground_snow, "gfx/school-type1.png") { \
+    tmpl_sprite_ground(Xcoord, 280, 1) \
+} \
+spritelayout slay_school1_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+        sprite: sset_school1_##Model##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_school1_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_school1_##Model##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+        sprite: sset_school1_##Model##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_school1_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+/* Model #1 */
+SCHOOL1_SPRITES(1_n, 4)
+SCHOOL1_SPRITES(1_e, 80)
+SCHOOL1_SPRITES(1_w, 156)
+SCHOOL1_SPRITES(1_s, 232)
+/* Model #2 */
+SCHOOL1_SPRITES(2_n, 308)
+SCHOOL1_SPRITES(2_e, 384)
+SCHOOL1_SPRITES(2_w, 460)
+SCHOOL1_SPRITES(2_s, 536)
+
+#define SCHOOL1_CONSTR_STAGE_SPRITES(Model, Xcoord) \
+spriteset(sset_school1_constr_stage2_##Model, "gfx/school-type1.png") { \
+    tmpl_sprite_build40(Xcoord, 340, 1) \
+} \
+spriteset(sset_school1_constr_stage1_##Model, "gfx/school-type1.png") { \
+    tmpl_sprite_ground(Xcoord, 440, 1) \
+} \
+spritelayout slay_school1_constr_stage1_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_school1_constr_stage1_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 8; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_school1_constr_stage2_##Model{ \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_school1_constr_stage2_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 40; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+/* Model #1 */
+SCHOOL1_CONSTR_STAGE_SPRITES(1_n, 4)
+SCHOOL1_CONSTR_STAGE_SPRITES(1_e, 80)
+SCHOOL1_CONSTR_STAGE_SPRITES(1_w, 156)
+SCHOOL1_CONSTR_STAGE_SPRITES(1_s, 232)
+/* Model #1 */
+SCHOOL1_CONSTR_STAGE_SPRITES(2_n, 308)
+SCHOOL1_CONSTR_STAGE_SPRITES(2_e, 384)
+SCHOOL1_CONSTR_STAGE_SPRITES(2_w, 460)
+SCHOOL1_CONSTR_STAGE_SPRITES(2_s, 536)
+
+/* Switches */
+#define SCHOOL1_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_school1_##Model##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_school1_##Model##_snow; \
+    slay_school1_##Model; \
+}
+/* Model #1 */
+SCHOOL1_SWITCH(1_n)
+SCHOOL1_SWITCH(1_e)
+SCHOOL1_SWITCH(1_w)
+SCHOOL1_SWITCH(1_s)
+/* Model #2 */
+SCHOOL1_SWITCH(2_n)
+SCHOOL1_SWITCH(2_e)
+SCHOOL1_SWITCH(2_w)
+SCHOOL1_SWITCH(2_s)
+
+switch (FEAT_HOUSES, SELF, switch_school1_old_n_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_1_n;
+    1..2: return slay_school1_constr_stage2_1_n;
+    return switch_school1_1_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_old_e_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_1_e;
+    1..2: return slay_school1_constr_stage2_1_e;
+    return switch_school1_1_e_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_old_w_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_1_w;
+    1..2: return slay_school1_constr_stage2_1_w;
+    return switch_school1_1_w_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_old_s_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_1_s;
+    1..2: return slay_school1_constr_stage2_1_s;
+    return switch_school1_1_s_climate_graphics;
+}
+
+switch (FEAT_HOUSES, SELF, switch_school1_new_n_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_2_n;
+    1..2: return slay_school1_constr_stage2_2_n;
+    return switch_school1_2_n_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_new_e_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_2_e;
+    1..2: return slay_school1_constr_stage2_2_e;
+    return switch_school1_2_e_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_new_w_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_2_w;
+    1..2: return slay_school1_constr_stage2_2_w;
+    return switch_school1_2_w_climate_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_school1_new_s_graphics, construction_state) {
+    0: return slay_school1_constr_stage1_2_s;
+    1..2: return slay_school1_constr_stage2_2_s;
+    return switch_school1_2_s_climate_graphics;
+}
+
+
+/* House definition */
+item (FEAT_HOUSES, item_school1_old, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_SCHOOL_OLD);
+//        override:                   0x28;
+        building_flags:             bitmask();
+        population:                 200;
+        mail_multiplier:            10;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     300;
+        removal_cost_multiplier:    250;
+        probability:                PLB_PROBABILITY * 0.33;
+        years_available:            [1935, 1965];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_school1_old_n_graphics;
+        graphics_east:      switch_school1_old_e_graphics;
+        graphics_west:      switch_school1_old_w_graphics;
+        graphics_south:     switch_school1_old_s_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}
+
+item (FEAT_HOUSES, item_school1_new, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_SCHOOL_NEW);
+//        override:                   0x28;
+        building_flags:             bitmask();
+        population:                 220;
+        mail_multiplier:            10;
+        accepted_cargos:            [[PASS, 8], [MAIL, 2], [GOOD, 2]];
+        local_authority_impact:     300;
+        removal_cost_multiplier:    250;
+        probability:                PLB_PROBABILITY * 0.5;
+        years_available:            [1965, 9999];
+        minimum_lifetime:           10;
+        availability_mask:          [bitmask(TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        graphics_north:     switch_school1_new_n_graphics;
+        graphics_east:      switch_school1_new_e_graphics;
+        graphics_west:      switch_school1_new_w_graphics;
+        graphics_south:     switch_school1_new_s_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

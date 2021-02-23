@@ -1,0 +1,217 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define BUILDING_PRL1_SPRITES(Model, Xcoord, Flags) \
+spriteset(sset_building_prl1_##Model##_ground, "gfx/buildings-prl1.png") { \
+    tmpl_sprite_ground(Xcoord,  160, 1) \
+} \
+spriteset(sset_building_prl1_##Model, "gfx/buildings-prl1.png") { \
+    tmpl_sprite_build80_flags(Xcoord,   20, 1, Flags) \
+} \
+spriteset(sset_building_prl1_##Model##_ground_snow, "gfx/buildings-prl1.png") { \
+    tmpl_sprite_ground(Xcoord,  360, 1) \
+} \
+spriteset(sset_building_prl1_##Model##_snow, "gfx/buildings-prl1.png") { \
+    tmpl_sprite_build80_flags(Xcoord,  220, 1, Flags) \
+} \
+spritelayout slay_building_prl1_##Model { \
+    ground { \
+        sprite: LOAD_TEMP(0); \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_prl1_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_prl1_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_building_prl1_##Model##_snow { \
+    ground { \
+        sprite: LOAD_TEMP(0); \
+ 	} \
+    childsprite { \
+	    sprite: sset_building_prl1_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_building_prl1_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 56; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+/* Model #1 */
+BUILDING_PRL1_SPRITES(1, 4, ANIM)
+/* Model #2 */
+BUILDING_PRL1_SPRITES(2, 80, 0)
+/* Model #3 */
+BUILDING_PRL1_SPRITES(3, 156, 0)
+/* Model #4 */
+BUILDING_PRL1_SPRITES(4, 232, 0)
+
+/* Switches */
+switch (FEAT_HOUSES, SELF, switch_building_prl1_1_normal_graphics, [
+    STORE_TEMP(GROUNDSPRITE_CONCRETE, 0), construction_state]) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow1l_1;
+    2: return switch_constr_stage_narrow1l_2;
+    return slay_building_prl1_1;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_1_snow_graphics, [
+    STORE_TEMP(GROUNDSPRITE_CONCRETE, 0), construction_state]) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow1l_1;
+    2: return switch_constr_stage_narrow1l_2;
+    return slay_building_prl1_1_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_1_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_building_prl1_1_snow_graphics;
+    switch_building_prl1_1_normal_graphics;
+}
+
+switch (FEAT_HOUSES, SELF, switch_building_prl1_2_normal_graphics, [
+    STORE_TEMP(GROUNDSPRITE_NORMAL, 0), construction_state]) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow1r_1;
+    2: return switch_constr_stage_narrow1r_2;
+    return slay_building_prl1_2;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_2_snow_graphics, [
+    STORE_TEMP(GROUNDSPRITE_SNOW, 0), construction_state]) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_narrow1r_1;
+    2: return switch_constr_stage_narrow1r_2;
+    return slay_building_prl1_2_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_2_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_building_prl1_2_snow_graphics;
+    switch_building_prl1_2_normal_graphics;
+}
+
+random_switch (FEAT_HOUSES, SELF, switch_building_prl1_3_normal_graphics) {
+    2: return slay_building_prl1_3;
+    2: return slay_building_prl1_4;
+}
+random_switch (FEAT_HOUSES, SELF, switch_building_prl1_3_snow_graphics) {
+    2: return slay_building_prl1_3_snow;
+    2: return slay_building_prl1_4_snow;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_3_climate_graphics, [
+    STORE_TEMP(terrain_type == TILETYPE_SNOW ? GROUNDSPRITE_SNOW : GROUNDSPRITE_NORMAL, 0), terrain_type]) {
+    TILETYPE_SNOW: switch_building_prl1_3_snow_graphics;
+    switch_building_prl1_3_normal_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_building_prl1_3_graphics, construction_state) {
+    0: return switch_constr_stage_buldoger;
+    1: return switch_constr_stage_square_1;
+    2: return switch_constr_stage_square_2;
+    return switch_building_prl1_3_climate_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_building_prl1_offices_shops) {
+    property {
+        /* common properties */
+        substitute:                 0x01;
+        name:                       string(STR_OFFICE_TALL_SHOPS);
+        override:                   0x01;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 120;
+        mail_multiplier:            58;
+        accepted_cargos:            [[PASS, 7], [MAIL, 2], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    107;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1963, 1995];
+        minimum_lifetime:           LIFETIME_MAJOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_prl1_1_graphics;
+//        cargo_type_accept:  switch_houses_cargo_type_accept;
+        anim_control:       switch_anim_control_75;
+    }
+}
+
+item (FEAT_HOUSES, item_building_prl1_offices) {
+    property {
+        /* common properties */
+        substitute:                 0x01;
+        name:                       string(STR_OFFICE);
+//        override:                   0x01;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 107;
+        mail_multiplier:            58;
+        accepted_cargos:            [[PASS, 7], [MAIL, 2], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    107;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1963, 1995];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_prl1_2_graphics;
+//        cargo_type_accept:  switch_houses_cargo_type_accept;
+        anim_control:       switch_anim_control_75;
+    }
+}
+
+item (FEAT_HOUSES, item_building_prl1_3) {
+    property {
+        /* common properties */
+        substitute:                 0x01;
+        name:                       string(STR_OFFICE);
+//        override:                   0x01;
+        building_flags:             bitmask(HOUSE_FLAG_ANIMATE);
+        population:                 107;
+        mail_multiplier:            58;
+        accepted_cargos:            [[PASS, 7], [MAIL, 2], [GOOD, 4]];
+        local_authority_impact:     100;
+        removal_cost_multiplier:    107;
+        probability:                PLB_PROBABILITY * 2;
+        years_available:            [1963, 1995];
+        minimum_lifetime:           LIFETIME_MAJOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        animation_info:             [ANIMATION_NON_LOOPING, 12];
+        animation_speed:            4;
+        watched_cargo_types:        [];
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_building_prl1_3_graphics;
+//        cargo_type_accept:  switch_houses_cargo_type_accept;
+        anim_control:       switch_anim_control_75;
+    }
+}

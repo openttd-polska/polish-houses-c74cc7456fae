@@ -1,0 +1,167 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+/* Sprites and spritelayouts */
+#define HOUSE_CUBE_AGE3_SPRITES(Model, Xcoord, Flags) \
+spriteset(sset_house_cube_age3_##Model##_stages, "gfx/house-cube-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  540, 1) \
+    tmpl_sprite_build40(Xcoord,  440, 1) \
+    tmpl_sprite_build40(Xcoord,  340, 1) \
+} \
+spriteset(sset_house_cube_age3_##Model##_ground, "gfx/house-cube-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_house_cube_age3_##Model, "gfx/house-cube-age3.png") { \
+    tmpl_sprite_build40(Xcoord,   20, 1) \
+} \
+spriteset(sset_house_cube_age3_##Model##_ground_snow, "gfx/house-cube-age3.png") { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spriteset(sset_house_cube_age3_##Model##_snow, "gfx/house-cube-age3.png") { \
+    tmpl_sprite_build40_flags(Xcoord,  180, 1, Flags) \
+} \
+spritelayout slay_house_cube_age3_##Model##_stages { \
+    ground { \
+        sprite: GROUNDSPRITE_CLEARED; \
+ 	} \
+    building { \
+        sprite: sset_house_cube_age3_##Model##_stages(LOAD_TEMP(2)); \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_house_cube_age3_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_cube_age3_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_cube_age3_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+} \
+spritelayout slay_house_cube_age3_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+	    sprite: sset_house_cube_age3_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_house_cube_age3_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_REMAP; \
+        palette: PALETTE_USE_DEFAULT; \
+    } \
+}
+
+/* Model #1 */
+HOUSE_CUBE_AGE3_SPRITES(1, 4, 0)
+/* Model #2 */
+HOUSE_CUBE_AGE3_SPRITES(2, 80, ANIM)
+/* Model #3 */
+HOUSE_CUBE_AGE3_SPRITES(3, 156, 0)
+/* Model #4 */
+HOUSE_CUBE_AGE3_SPRITES(4, 232, 0)
+/* Model #5 */
+HOUSE_CUBE_AGE3_SPRITES(5, 308, 0)
+/* Model #6 */
+HOUSE_CUBE_AGE3_SPRITES(6, 384, 0)
+
+/* Switches */
+#define HOUSE_CUBE_AGE3_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_house_cube_age3_##Model##_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_cube_age3_##Model##_stages; \
+    return slay_house_cube_age3_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_house_cube_age3_##Model##_snow_graphics, [ \
+    STORE_TEMP(construction_state, 2), construction_state]) { \
+    0..2: return slay_house_cube_age3_##Model##_stages; \
+    return slay_house_cube_age3_##Model##_snow; \
+}
+/* Model #1 */
+HOUSE_CUBE_AGE3_SWITCH(1)
+/* Model #2 */
+HOUSE_CUBE_AGE3_SWITCH(2)
+/* Model #3 */
+HOUSE_CUBE_AGE3_SWITCH(3)
+/* Model #4 */
+HOUSE_CUBE_AGE3_SWITCH(4)
+/* Model #5 */
+HOUSE_CUBE_AGE3_SWITCH(5)
+/* Model #6 */
+HOUSE_CUBE_AGE3_SWITCH(6)
+
+random_switch (FEAT_HOUSES, SELF, switch_house_cube_age3_model_graphics) {
+    5: return switch_house_cube_age3_1_graphics;
+    5: return switch_house_cube_age3_2_graphics;
+    6: return switch_house_cube_age3_3_graphics;
+    5: return switch_house_cube_age3_4_graphics;
+    5: return switch_house_cube_age3_5_graphics;
+    6: return switch_house_cube_age3_6_graphics;
+}
+random_switch (FEAT_HOUSES, SELF, switch_house_cube_age3_model_snow_graphics) {
+    5: return switch_house_cube_age3_1_snow_graphics;
+    5: return switch_house_cube_age3_2_snow_graphics;
+    6: return switch_house_cube_age3_3_snow_graphics;
+    5: return switch_house_cube_age3_4_snow_graphics;
+    5: return switch_house_cube_age3_5_snow_graphics;
+    6: return switch_house_cube_age3_6_snow_graphics;
+}
+switch (FEAT_HOUSES, SELF, switch_house_cube_age3_graphics, terrain_type) {
+    TILETYPE_SNOW: switch_house_cube_age3_model_snow_graphics;
+    switch_house_cube_age3_model_graphics;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_house_cube_age3) {
+    property {
+        /* common properties */
+        substitute:                 0x2E;
+        name:                       string(STR_CUBE_HOUSE);
+//        override:                   0x2E;
+        building_flags:             bitmask();
+        population:                 18;
+        mail_multiplier:            8;
+        accepted_cargos:            [[PASS, 3], [MAIL, 2], [GOOD, 3]];
+        local_authority_impact:     75;
+        removal_cost_multiplier:    80;
+        probability:                PLB_PROBABILITY * 8;
+        years_available:            [1991, 9999];
+        minimum_lifetime:           LIFETIME_MINOR_HOUSE;
+        availability_mask:          [bitmask(TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_NONE;
+    }
+
+    graphics {
+        default:            switch_house_cube_age3_graphics;
+        cargo_type_accept:  switch_houses_cargo_type_accept;
+    }
+}

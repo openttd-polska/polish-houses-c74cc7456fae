@@ -1,0 +1,119 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define PKIN_FILE  "gfx/pkin.png"
+
+/* Sprites and spritelayouts */
+#define PKIN_TILE_SPRITES(Tile, Xcoord) \
+spriteset(sset_pkin_##Tile, PKIN_FILE) { \
+    tmpl_sprite_build160_quad_##Tile##_flags(Xcoord, 20, 1, ANIM) \
+} \
+spriteset(sset_pkin_##Tile##_ground, PKIN_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord, 280, 1) \
+} \
+spriteset(sset_pkin_##Tile##_snow, PKIN_FILE) { \
+    tmpl_sprite_build160_quad_##Tile##_flags(Xcoord+136, 20, 1, ANIM) \
+} \
+spriteset(sset_pkin_##Tile##_ground_snow, PKIN_FILE) { \
+    tmpl_sprite_ground_quad_##Tile(Xcoord+136, 280, 1) \
+} \
+spritelayout slay_pkin_##Tile{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_pkin_##Tile##_ground; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_pkin_##Tile; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 160; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}\
+spritelayout slay_pkin_##Tile##_snow{ \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+        sprite: sset_pkin_##Tile##_ground_snow; \
+        always_draw: 1; \
+    } \
+    building { \
+        sprite: sset_pkin_##Tile##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 160; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define PKIN_SPRITES(Xcoord) \
+    PKIN_TILE_SPRITES(n, Xcoord) \
+    PKIN_TILE_SPRITES(s, Xcoord) \
+    PKIN_TILE_SPRITES(e, Xcoord) \
+    PKIN_TILE_SPRITES(w, Xcoord)
+
+PKIN_SPRITES(4)
+
+/* Switches */
+#define PKIN_TILE_CLIMATE_SWITCH(Tile) \
+switch (FEAT_HOUSES, SELF, switch_pkin_##Tile##_graphics, terrain_type) { \
+    TILETYPE_SNOW: slay_pkin_##Tile##_snow; \
+    slay_pkin_##Tile; \
+}
+#define PKIN_CLIMATE_SWITCHES \
+    PKIN_TILE_CLIMATE_SWITCH(n) \
+    PKIN_TILE_CLIMATE_SWITCH(s) \
+    PKIN_TILE_CLIMATE_SWITCH(e) \
+    PKIN_TILE_CLIMATE_SWITCH(w)
+
+PKIN_CLIMATE_SWITCHES
+
+switch (FEAT_HOUSES, SELF, switch_pkin_location_check, ((same_house_count_map < 1) && (nearby_tile_height(0, 0) <= param_transition)) && ((nearby_tile_class(1, 2) == TILE_CLASS_ROAD) || (nearby_tile_class(2, 1) == TILE_CLASS_ROAD))) {
+    return;
+}
+switch (FEAT_HOUSES, PARENT, switch_pkin_construction_check, is_city) {
+    1: return switch_pkin_location_check;
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_pkin, -1, HOUSE_SIZE_2X2) {
+    property {
+        /* common properties */
+        substitute:                 0x28;
+        name:                       string(STR_PKIN);
+//        override:                   0x28;
+        building_flags:             bitmask();
+        population:                 140;
+        mail_multiplier:            160;
+        accepted_cargos:            [[PASS, 8], [MAIL, 6], [GOOD, 4]];
+        local_authority_impact:     500;
+        removal_cost_multiplier:    255;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1950, 1980];
+        minimum_lifetime:           50;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_SKYSCRAPER;
+    }
+
+    graphics {
+        graphics_north:     switch_pkin_n_graphics;
+        graphics_south:     switch_pkin_s_graphics;
+        graphics_east:      switch_pkin_e_graphics;
+        graphics_west:      switch_pkin_w_graphics;
+        construction_check: switch_pkin_construction_check;
+    }
+}

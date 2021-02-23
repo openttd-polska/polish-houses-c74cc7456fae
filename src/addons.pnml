@@ -1,0 +1,262 @@
+// This is part of Polish Buildings Set NewGRF.
+// Don't include any headers inside this file!
+// (c) Tadeusz Domagalski, licence: GPLv2
+
+#define ADDONS_FILE     "gfx/addons.png"
+/* Sprites and spritelayouts */
+#define ADDONS_1_SPRITES(Model, Xcoord, Flags) \
+spriteset(sset_addons_##Model, ADDONS_FILE) { \
+    tmpl_sprite_build40_flags(Xcoord,   20, 1, Flags) \
+} \
+spriteset(sset_addons_##Model##_ground, ADDONS_FILE) { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_addons_##Model##_snow, ADDONS_FILE) { \
+    tmpl_sprite_build40_flags(Xcoord,  180, 1, Flags) \
+} \
+spriteset(sset_addons_##Model##_ground_snow, ADDONS_FILE) { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spritelayout slay_addons_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_addons_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_addons_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_addons_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_CONCRETE; \
+ 	} \
+    childsprite { \
+	    sprite: sset_addons_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_addons_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 16; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+#define ADDONS_2_SPRITES(Model, Xcoord, Flags) \
+spriteset(sset_addons_##Model, ADDONS_FILE) { \
+    tmpl_sprite_build40_flags(Xcoord,   20, 1, Flags) \
+} \
+spriteset(sset_addons_##Model##_ground, ADDONS_FILE) { \
+    tmpl_sprite_ground(Xcoord,  120, 1) \
+} \
+spriteset(sset_addons_##Model##_snow, ADDONS_FILE) { \
+    tmpl_sprite_build40_flags(Xcoord,  180, 1, Flags) \
+} \
+spriteset(sset_addons_##Model##_ground_snow, ADDONS_FILE) { \
+    tmpl_sprite_ground(Xcoord,  280, 1) \
+} \
+spritelayout slay_addons_##Model { \
+    ground { \
+        sprite: GROUNDSPRITE_NORMAL; \
+ 	} \
+    childsprite { \
+	    sprite: sset_addons_##Model##_ground; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_addons_##Model; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+} \
+spritelayout slay_addons_##Model##_snow { \
+    ground { \
+        sprite: GROUNDSPRITE_SNOW; \
+ 	} \
+    childsprite { \
+	    sprite: sset_addons_##Model##_ground_snow; \
+		always_draw: 1; \
+	} \
+    building { \
+        sprite: sset_addons_##Model##_snow; \
+        xoffset: 0; \
+        yoffset: 0; \
+        zoffset: 0; \
+        xextent: 16; \
+        yextent: 16; \
+        zextent: 32; \
+        recolour_mode: RECOLOUR_NONE; \
+    } \
+}
+
+/* Model #1 */
+ADDONS_1_SPRITES(1, 4, 0)
+/* Model #2 */
+ADDONS_1_SPRITES(2, 80, 0)
+/* Model #3 */
+ADDONS_1_SPRITES(3, 156, ANIM)
+/* Model #4 */
+ADDONS_1_SPRITES(4, 232, 0)
+/* Model #5 */
+ADDONS_2_SPRITES(5, 308, 0)
+
+/* Switches */
+#define ADDONS_SWITCH(Model) \
+switch (FEAT_HOUSES, SELF, switch_addons_##Model##_climate_graphics, terrain_type) { \
+    TILETYPE_SNOW: return slay_addons_##Model##_snow; \
+    return slay_addons_##Model; \
+} \
+switch (FEAT_HOUSES, SELF, switch_addons_##Model##_graphics, construction_state) { \
+    0..2: return switch_constr_stage_buldoger; \
+    return switch_addons_##Model##_climate_graphics; \
+}
+/* Model #1 */
+ADDONS_SWITCH(1)
+/* Model #2 */
+ADDONS_SWITCH(2)
+/* Model #3 */
+ADDONS_SWITCH(3)
+/* Model #4 */
+ADDONS_SWITCH(4)
+/* Model #5 */
+ADDONS_SWITCH(5)
+
+random_switch (FEAT_HOUSES, SELF, switch_monument_graphics) {
+    4: return switch_addons_1_graphics;
+    4: return switch_addons_2_graphics;
+}
+switch( FEAT_HOUSES, SELF, switch_check_addons_distance,
+    nearest_house_matching_criterion(1, SEARCH_HOUSE_BY_CLASS)==0) {
+    return;
+}
+
+/* House definition */
+item (FEAT_HOUSES, item_monument) {
+    property {
+        /* common properties */
+        substitute:                 0x09;
+        name:                       string(STR_MONUMENT);
+//        override:                   0x09;
+        building_flags:             bitmask();
+        population:                 1;
+        mail_multiplier:            0;
+        accepted_cargos:            [[PASS, 2], [MAIL, 1]];
+        local_authority_impact:     24;
+        removal_cost_multiplier:    35;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1925, 1965];
+        minimum_lifetime:           5;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_ESTHETIC;
+    }
+
+    graphics {
+        default:                switch_monument_graphics;
+        construction_check:     switch_check_addons_distance;
+    }
+}
+
+item (FEAT_HOUSES, item_tank) {
+    property {
+        /* common properties */
+        substitute:                 0x09;
+        name:                       string(STR_TANK);
+//        override:                   0x09;
+        building_flags:             bitmask();
+        population:                 1;
+        mail_multiplier:            0;
+        accepted_cargos:            [[PASS, 2], [MAIL, 1]];
+        local_authority_impact:     24;
+        removal_cost_multiplier:    35;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1945, 1985];
+        minimum_lifetime:           5;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_ESTHETIC;
+    }
+
+    graphics {
+        default:                switch_addons_4_graphics;
+        construction_check:     switch_check_addons_distance;
+    }
+}
+
+item (FEAT_HOUSES, item_fountain) {
+    property {
+        /* common properties */
+        substitute:                 0x0A;
+        name:                       string(STR_FOUNTAIN);
+//        override:                   0x0A;
+        building_flags:             bitmask();
+        population:                 1;
+        mail_multiplier:            0;
+        accepted_cargos:            [[PASS, 2], [MAIL, 1]];
+        local_authority_impact:     24;
+        removal_cost_multiplier:    35;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1935, 9999];
+        minimum_lifetime:           5;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_ESTHETIC;
+    }
+
+    graphics {
+        default:                switch_addons_3_graphics;
+        construction_check:     switch_check_addons_distance;
+    }
+}
+
+item (FEAT_HOUSES, item_park) {
+    property {
+        /* common properties */
+        substitute:                 0x0A;
+        name:                       string(STR_PARK);
+//        override:                   0x0A;
+        building_flags:             bitmask();
+        population:                 1;
+        mail_multiplier:            0;
+        accepted_cargos:            [[PASS, 2], [MAIL, 1]];
+        local_authority_impact:     24;
+        removal_cost_multiplier:    35;
+        probability:                PLB_PROBABILITY;
+        years_available:            [1950, 9999];
+        minimum_lifetime:           5;
+        availability_mask:          [bitmask(TOWNZONE_CENTRE), PLB_CLIMATES];
+        random_colours:             [COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_DARK_BLUE];
+        refresh_multiplier:         0;
+        // no animation info
+        building_class:             CLASS_ESTHETIC;
+    }
+
+    graphics {
+        default:                switch_addons_5_graphics;
+        construction_check:     switch_check_addons_distance;
+    }
+}
